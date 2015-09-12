@@ -6,8 +6,8 @@ import com.thinkfaster.model.scene.BaseScene;
 import com.thinkfaster.model.scene.LoadingScene;
 import com.thinkfaster.model.scene.SplashScene;
 import com.thinkfaster.model.scene.game.EndGameScene;
+import com.thinkfaster.model.scene.game.GameScene;
 import com.thinkfaster.model.scene.game.GameTypeScene;
-import com.thinkfaster.model.scene.game.SinglePlayerGameScene;
 import com.thinkfaster.model.scene.menu.AboutScene;
 import com.thinkfaster.model.scene.menu.HighScoreScene;
 import com.thinkfaster.model.scene.menu.MainMenuScene;
@@ -85,7 +85,7 @@ public class SceneManager {
     }
 
 
-    public void loadGameScene(Level level) {
+    public void loadGameScene(final Level level) {
         setScene(loadingScene);
         ResourcesManager.getInstance().unloadGameTypeTextures();
         ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ContextConstants.LOADING_SCENE_TIME, new ITimerCallback() {
@@ -93,7 +93,7 @@ public class SceneManager {
             public void onTimePassed(TimerHandler pTimerHandler) {
                 ResourcesManager.getInstance().getEngine().unregisterUpdateHandler(pTimerHandler);
                 ResourcesManager.getInstance().loadGameResources();
-                singlePlayerGameScene = new SinglePlayerGameScene();
+                singlePlayerGameScene = new GameScene(level);
                 setScene(singlePlayerGameScene);
             }
         }));

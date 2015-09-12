@@ -26,9 +26,13 @@ public abstract class BaseScene extends Scene {
         this.activity = resourcesManager.getActivity();
         this.vertexBufferObjectManager = resourcesManager.getVertexBufferObjectManager();
         this.camera = resourcesManager.getCamera();
+        initializeServices();
         createScene(objects);
     }
 
+    public void initializeServices(){
+        // intentionally left blank
+    }
 
     public abstract void createScene(Object... objects);
 
