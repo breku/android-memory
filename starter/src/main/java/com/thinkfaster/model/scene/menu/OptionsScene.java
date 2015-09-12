@@ -2,13 +2,11 @@ package com.thinkfaster.model.scene.menu;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.widget.EditText;
 import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.manager.SceneManager;
 import com.thinkfaster.matcher.ClassIEntityMatcher;
 import com.thinkfaster.model.scene.BaseScene;
-import com.thinkfaster.service.OptionsService;
 import com.thinkfaster.util.SceneType;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.IMenuItem;
@@ -19,7 +17,6 @@ import org.andengine.entity.text.Text;
 
 import static com.thinkfaster.util.ContextConstants.SCREEN_HEIGHT;
 import static com.thinkfaster.util.ContextConstants.SCREEN_WIDTH;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
  * User: Breku
@@ -28,16 +25,13 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 public class OptionsScene extends BaseScene implements MenuScene.IOnMenuItemClickListener {
 
     private final int USERNAME = 0;
-    private OptionsService optionsService;
     private MenuScene menuScene;
 
 
     @Override
     public void createScene(Object... objects) {
-        initialize();
         createBackground();
         createLeftSideMenuLabels();
-        createRightSideMenuValues();
     }
 
     @Override
@@ -58,25 +52,6 @@ public class OptionsScene extends BaseScene implements MenuScene.IOnMenuItemClic
     public void createUsernameInput(Context context) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(context);
         final EditText input = new EditText(context);
-
-        alert.setView(input);
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String value = input.getText().toString().trim();
-                if (isNotBlank(value)) {
-                    optionsService.updateUsername(value);
-                    updateUsernameOnScreen(value);
-                }
-            }
-        });
-
-        alert.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.cancel();
-                    }
-                });
-        alert.show();
     }
 
     @Override
@@ -97,10 +72,6 @@ public class OptionsScene extends BaseScene implements MenuScene.IOnMenuItemClic
         usernameText.setText(username);
     }
 
-    private void createRightSideMenuValues() {
-        String username = optionsService.getUsername();
-        attachChild(new Text(600, 350, resourcesManager.getWhiteFont(), username, vertexBufferObjectManager));
-    }
 
     private void createUsernameInput() {
         activity.runOnUiThread(
@@ -113,9 +84,6 @@ public class OptionsScene extends BaseScene implements MenuScene.IOnMenuItemClic
         );
     }
 
-    private void initialize() {
-        optionsService = new OptionsService();
-    }
 
     private void createBackground() {
         attachChild(new Sprite(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, resourcesManager.getOptionsBackgroundTextureRegion(), vertexBufferObjectManager));

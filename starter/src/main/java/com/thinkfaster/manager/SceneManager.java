@@ -84,7 +84,7 @@ public class SceneManager {
     }
 
 
-    public void loadGameScene(final LevelDifficulty levelDifficulty, final MathParameter mathParameter) {
+    public void loadGameScene() {
         setScene(loadingScene);
         ResourcesManager.getInstance().unloadGameTypeTextures();
         ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ContextConstants.LOADING_SCENE_TIME, new ITimerCallback() {
@@ -92,7 +92,7 @@ public class SceneManager {
             public void onTimePassed(TimerHandler pTimerHandler) {
                 ResourcesManager.getInstance().getEngine().unregisterUpdateHandler(pTimerHandler);
                 ResourcesManager.getInstance().loadGameResources();
-                singlePlayerGameScene = new SinglePlayerGameScene(levelDifficulty, mathParameter);
+                singlePlayerGameScene = new SinglePlayerGameScene();
                 setScene(singlePlayerGameScene);
             }
         }));
@@ -112,7 +112,7 @@ public class SceneManager {
         }));
     }
 
-    public void loadHighScoreSceneFrom(SceneType sceneType, final Integer score, final LevelDifficulty levelDifficulty, final MathParameter mathParameter) {
+    public void loadHighScoreSceneFrom(SceneType sceneType) {
         switch (sceneType) {
             case MENU:
                 setScene(loadingScene);
@@ -136,7 +136,7 @@ public class SceneManager {
                     public void onTimePassed(TimerHandler pTimerHandler) {
                         ResourcesManager.getInstance().getEngine().unregisterUpdateHandler(pTimerHandler);
                         ResourcesManager.getInstance().loadRecordResources();
-                        recordScene = new HighScoreScene(score, levelDifficulty, mathParameter);
+                        recordScene = new HighScoreScene();
                         setScene(recordScene);
                     }
                 }));

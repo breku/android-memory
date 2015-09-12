@@ -12,8 +12,8 @@ public class ContextConstants implements Constants, LevelConstants {
     public static final int SCREEN_WIDTH = 800;
     public static final int SCREEN_HEIGHT = 480;
 
-    public static final float LOADING_SCENE_TIME = 0.1f;
-    public static final float SPLASH_SCREEN_TIME = 0.2f;
+    public static final float LOADING_SCENE_TIME = 0.25f;
+    public static final float SPLASH_SCREEN_TIME = 2.0f;
 
     /**
      * Number of mathematical equations, which are initialized on the beginning

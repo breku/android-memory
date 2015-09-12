@@ -1,7 +1,6 @@
 package com.thinkfaster.manager;
 
 import android.graphics.Color;
-import com.thinkfaster.util.MathParameter;
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
@@ -343,23 +342,6 @@ public class ResourcesManager {
 
     public void loadMenuTextures() {
         menuTextureAtlas.load();
-    }
-
-    public ITextureRegion getTextureFor(MathParameter mathParameter) {
-        switch (mathParameter) {
-            case ADD:
-                return buttonAddTextureRegion;
-            case SUB:
-                return buttonSubTextureRegion;
-            case MUL:
-                return buttonMulTextureRegion;
-            case DIV:
-                return buttonDivTextureRegion;
-            case ALL:
-                return buttonAllTextureRegion;
-            default:
-                throw new UnsupportedOperationException();
-        }
     }
 
     public void unloadSplashScreen() {
