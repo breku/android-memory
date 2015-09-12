@@ -1,9 +1,9 @@
 package com.thinkfaster.model.scene.game;
 
+import com.brekol.model.shape.GameButton;
 import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.manager.SceneManager;
 import com.thinkfaster.matcher.ClassTouchAreaMacher;
-import com.thinkfaster.model.shape.GameButton;
 import com.thinkfaster.model.shape.LifeBar;
 import com.thinkfaster.model.shape.MathEquation;
 import com.thinkfaster.model.shape.MathEquationText;
@@ -141,13 +141,13 @@ public class SinglePlayerGameScene extends AbstractGameScene {
     }
 
     private void createGreenButton() {
-        greenButton = new GameButton(700, 100, ResourcesManager.getInstance().getButtonOkTextureRegion());
+        greenButton = new GameButton(700, 100, ResourcesManager.getInstance().getButtonOkTextureRegion(), resourcesManager.getVertexBufferObjectManager());
         registerTouchArea(greenButton);
         attachChild(greenButton);
     }
 
     private void createRedButton() {
-        redButton = new GameButton(100, 100, ResourcesManager.getInstance().getButtonNoTextureRegion());
+        redButton = new GameButton(100, 100, resourcesManager.getButtonNoTextureRegion(), resourcesManager.getVertexBufferObjectManager());
         registerTouchArea(redButton);
         attachChild(redButton);
     }

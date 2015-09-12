@@ -1,6 +1,7 @@
 package com.thinkfaster.model.scene;
 
 import com.thinkfaster.manager.ResourcesManager;
+import com.thinkfaster.model.scene.BaseScene;
 import com.thinkfaster.util.ContextConstants;
 import com.thinkfaster.util.SceneType;
 import org.andengine.entity.sprite.Sprite;

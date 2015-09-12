@@ -33,6 +33,9 @@ android {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+        }
     }
 }
 
@@ -40,6 +43,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile project(':andengine')
+    compile project(':core')
+    compile project(':model')
     compile 'com.google.android.gms:play-services:7.0.0'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.purplebrain.adbuddiz.sdk:AdBuddiz-Java:3.+'
