@@ -1,6 +1,7 @@
 package com.thinkfaster.manager;
 
 import com.purplebrain.adbuddiz.sdk.AdBuddiz;
+import com.thinkfaster.model.Level;
 import com.thinkfaster.model.scene.BaseScene;
 import com.thinkfaster.model.scene.LoadingScene;
 import com.thinkfaster.model.scene.SplashScene;
@@ -84,7 +85,7 @@ public class SceneManager {
     }
 
 
-    public void loadGameScene() {
+    public void loadGameScene(Level level) {
         setScene(loadingScene);
         ResourcesManager.getInstance().unloadGameTypeTextures();
         ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ContextConstants.LOADING_SCENE_TIME, new ITimerCallback() {
