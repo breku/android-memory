@@ -1,4 +1,4 @@
-package com.brekol.core;
+package com.brekol.andengine;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

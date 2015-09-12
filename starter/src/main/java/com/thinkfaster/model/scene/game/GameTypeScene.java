@@ -1,5 +1,6 @@
 package com.thinkfaster.model.scene.game;
 
+import android.widget.Toast;
 import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.manager.SceneManager;
 import com.thinkfaster.model.scene.BaseScene;

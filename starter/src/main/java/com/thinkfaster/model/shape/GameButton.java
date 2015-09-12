@@ -1,9 +1,9 @@
-package com.brekol.model.shape;
+package com.thinkfaster.model.shape;
 
+import com.thinkfaster.manager.ResourcesManager;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 /**
  * User: Breku
@@ -13,8 +13,8 @@ public class GameButton extends Sprite {
 
     private boolean clicked = false;
 
-    public GameButton(final float pX, final float pY, final ITextureRegion pTextureRegion, VertexBufferObjectManager vbo) {
-        super(pX, pY, pTextureRegion, vbo);
+    public GameButton(final float pX, final float pY, final ITextureRegion pTextureRegion) {
+        super(pX, pY, pTextureRegion, ResourcesManager.getInstance().getVertexBufferObjectManager());
     }
 
     @Override
