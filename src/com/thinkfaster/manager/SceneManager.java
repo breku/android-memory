@@ -81,7 +81,7 @@ public class SceneManager {
         gameTypeScene = new GameTypeScene();
         setScene(gameTypeScene);
         ResourcesManager.getInstance().unloadMenuTextures();
-        AdBuddiz.showAd(activity);
+//        AdBuddiz.showAd(activity);
     }
 
 

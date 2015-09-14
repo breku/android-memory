@@ -46,13 +46,6 @@ public class GameScene extends AbstractGameScene {
         createHUD();
     }
 
-    private void createMemoryItems() {
-        final List<MemoryItem> memoryItems = gameTexturesProvider.getMemoryItems(currentLevel);
-        for (MemoryItem memoryItem : memoryItems) {
-            attachChild(memoryItem);
-        }
-    }
-
     @Override
     public void onBackKeyPressed() {
         SceneManager.getInstance().loadMenuScene(this);
@@ -72,12 +65,17 @@ public class GameScene extends AbstractGameScene {
         ResourcesManager.getInstance().unloadGameTextures();
     }
 
+    private void createMemoryItems() {
+        final List<MemoryItem> memoryItems = gameTexturesProvider.getMemoryItems(currentLevel);
+        for (MemoryItem memoryItem : memoryItems) {
+            attachChild(memoryItem);
+        }
+    }
+
     private void init(Object... objects) {
         clearUpdateHandlers();
         clearTouchAreas();
         initializeLevel(objects);
-
-
     }
 
     private void initializeLevel(Object[] objects) {
@@ -87,10 +85,7 @@ public class GameScene extends AbstractGameScene {
     private void createBackground() {
         unregisterTouchAreas(new ClassTouchAreaMacher(Sprite.class));
         clearChildScene();
-        attachChild(new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2,
-                ResourcesManager.getInstance().getBackgroundGameTextureRegion(), vertexBufferObjectManager));
-
-
+        setBackground(gameTexturesProvider.getBackground());
     }
 
 
