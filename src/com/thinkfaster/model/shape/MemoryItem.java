@@ -10,7 +10,9 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
  */
 public class MemoryItem extends AnimatedSprite{
 
-    public MemoryItem(float pX, float pY, ITiledTextureRegion pTiledTextureRegion) {
-        super(pX, pY, pTiledTextureRegion, ResourcesManager.getInstance().getVertexBufferObjectManager());
+    public MemoryItem(int positionX, int positionY, ITiledTextureRegion pTiledTextureRegion) {
+        super(positionX,positionY, pTiledTextureRegion, ResourcesManager.getInstance().getVertexBufferObjectManager());
     }
+
+
 }

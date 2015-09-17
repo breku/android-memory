@@ -1,11 +1,11 @@
 package com.thinkfaster.model.scene.game;
 
-import com.thinkfaster.manager.GameTexturesProvider;
+import com.thinkfaster.model.shape.MemoryPair;
+import com.thinkfaster.service.GameItemsProvider;
 import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.manager.SceneManager;
 import com.thinkfaster.matcher.ClassTouchAreaMacher;
 import com.thinkfaster.model.Level;
-import com.thinkfaster.model.shape.MemoryItem;
 import com.thinkfaster.util.ContextConstants;
 import com.thinkfaster.util.SceneType;
 import org.andengine.engine.camera.hud.HUD;
@@ -21,7 +21,7 @@ public class GameScene extends AbstractGameScene {
 
 
     private HUD gameHUD;
-    private GameTexturesProvider gameTexturesProvider;
+    private GameItemsProvider gameItemsProvider;
     private Level currentLevel;
 
     /**
@@ -35,7 +35,7 @@ public class GameScene extends AbstractGameScene {
 
     @Override
     public void initializeServices() {
-        gameTexturesProvider = new GameTexturesProvider();
+        gameItemsProvider = new GameItemsProvider(resourcesManager);
     }
 
     @Override
@@ -66,9 +66,10 @@ public class GameScene extends AbstractGameScene {
     }
 
     private void createMemoryItems() {
-        final List<MemoryItem> memoryItems = gameTexturesProvider.getMemoryItems(currentLevel);
-        for (MemoryItem memoryItem : memoryItems) {
-            attachChild(memoryItem);
+        final List<MemoryPair> memoryPairs = gameItemsProvider.getMemoryPairs(currentLevel);
+        for (MemoryPair memoryPair : memoryPairs) {
+            attachChild(memoryPair.getItem1());
+            attachChild(memoryPair.getItem2());
         }
     }
 
@@ -85,7 +86,7 @@ public class GameScene extends AbstractGameScene {
     private void createBackground() {
         unregisterTouchAreas(new ClassTouchAreaMacher(Sprite.class));
         clearChildScene();
-        setBackground(gameTexturesProvider.getBackground());
+        setBackground(gameItemsProvider.getBackground());
     }
 
 

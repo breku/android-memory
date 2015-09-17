@@ -260,6 +260,10 @@ public class ResourcesManager {
         loadingTextureAtlas.load();
     }
 
+    public ITiledTextureRegion getAnimalTiledTexture(int animalId) {
+        return animalTiledTextureRegionList.get(animalId);
+    }
+
     private void loadAboutGraphics() {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/about/");
         aboutTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
