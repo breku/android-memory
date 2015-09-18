@@ -1,6 +1,7 @@
 package com.thinkfaster.service;
 
 import com.thinkfaster.model.Level;
+import com.thinkfaster.model.shape.AnimalId;
 import com.thinkfaster.util.ContextConstants;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -23,7 +24,7 @@ public class RandomizerTest {
     @Test
     public void shouldHaveCorrectSizeForSmallLevel() {
         // when
-        final Set<Pair<Integer, Integer>> animalIds = uut.getRandomAnimalIds(Level.SMALL);
+        final Set<AnimalId> animalIds = uut.getRandomAnimalIds(Level.SMALL);
 
         // then
         assertThat(animalIds).hasSize(8);
@@ -32,7 +33,7 @@ public class RandomizerTest {
     @Test
     public void shouldHaveCorrectSizeForMediumLevel() {
         // when
-        final Set<Pair<Integer, Integer>> animalIds = uut.getRandomAnimalIds(Level.MEDIUM);
+        final Set<AnimalId> animalIds = uut.getRandomAnimalIds(Level.MEDIUM);
 
         // then
         assertThat(animalIds).hasSize(10);
@@ -41,7 +42,7 @@ public class RandomizerTest {
     @Test
     public void shouldHaveCorrectSizeForBigLevel() {
         // when
-        final Set<Pair<Integer, Integer>> animalIds = uut.getRandomAnimalIds(Level.BIG);
+        final Set<AnimalId> animalIds = uut.getRandomAnimalIds(Level.BIG);
 
         // then
         assertThat(animalIds).hasSize(12);
@@ -50,10 +51,10 @@ public class RandomizerTest {
     @Test
     public void animalIdsShouldBeLowerThanTotalAnimalNumber() {
         // when
-        final Set<Pair<Integer, Integer>> animalIds = uut.getRandomAnimalIds(Level.BIG);
+        final Set<AnimalId> animalIds = uut.getRandomAnimalIds(Level.BIG);
 
         // then
-        for (Pair<Integer, Integer> animalId : animalIds) {
+        for (AnimalId animalId : animalIds) {
             assertThat(animalId.getLeft()).isLessThan(ContextConstants.NUMBER_OF_ANIMALS);
         }
     }
@@ -61,10 +62,10 @@ public class RandomizerTest {
     @Test
     public void tileIdsShouldBeLowerThanTotalTilesPerAnimal() {
         // when
-        final Set<Pair<Integer, Integer>> animalIds = uut.getRandomAnimalIds(Level.BIG);
+        final Set<AnimalId> animalIds = uut.getRandomAnimalIds(Level.BIG);
 
         // then
-        for (Pair<Integer, Integer> animalId : animalIds) {
+        for (AnimalId animalId : animalIds) {
             assertThat(animalId.getRight()).isLessThan(ContextConstants.NUMBER_OF_ANIMALS_PER_IMAGE);
         }
     }
@@ -74,7 +75,7 @@ public class RandomizerTest {
         // given
 
         // when
-        final Set<Pair<Integer, Integer>> animalPositions = uut.getRandomAnimalPositions(Level.SMALL);
+        final Set<AnimalId> animalPositions = uut.getRandomAnimalPositions(Level.SMALL);
 
         // then
         assertThat(animalPositions).hasSize(16);
@@ -90,7 +91,7 @@ public class RandomizerTest {
         // given
 
         // when
-        final Set<Pair<Integer, Integer>> animalPositions = uut.getRandomAnimalPositions(Level.MEDIUM);
+        final Set<AnimalId> animalPositions = uut.getRandomAnimalPositions(Level.MEDIUM);
 
         // then
         assertThat(animalPositions).hasSize(20);
@@ -107,7 +108,7 @@ public class RandomizerTest {
         // given
 
         // when
-        final Set<Pair<Integer, Integer>> animalPositions = uut.getRandomAnimalPositions(Level.BIG);
+        final Set<AnimalId> animalPositions = uut.getRandomAnimalPositions(Level.BIG);
 
         // then
         assertThat(animalPositions).hasSize(24);

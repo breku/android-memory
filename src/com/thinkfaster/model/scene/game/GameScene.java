@@ -1,11 +1,13 @@
 package com.thinkfaster.model.scene.game;
 
-import com.thinkfaster.model.shape.MemoryPair;
-import com.thinkfaster.service.GameItemsProvider;
 import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.manager.SceneManager;
 import com.thinkfaster.matcher.ClassTouchAreaMacher;
 import com.thinkfaster.model.Level;
+import com.thinkfaster.model.shape.AnimalId;
+import com.thinkfaster.model.shape.MemoryPair;
+import com.thinkfaster.model.shape.QuestionMarkItem;
+import com.thinkfaster.service.GameItemsProvider;
 import com.thinkfaster.util.ContextConstants;
 import com.thinkfaster.util.SceneType;
 import org.andengine.engine.camera.hud.HUD;
@@ -20,9 +22,11 @@ import java.util.List;
 public class GameScene extends AbstractGameScene {
 
 
+    List<QuestionMarkItem> questionMarks;
     private HUD gameHUD;
     private GameItemsProvider gameItemsProvider;
     private Level currentLevel;
+    private List<MemoryPair> memoryPairs;
 
     /**
      * @param objects objects[0] - levelDifficulty
@@ -66,10 +70,19 @@ public class GameScene extends AbstractGameScene {
     }
 
     private void createMemoryItems() {
-        final List<MemoryPair> memoryPairs = gameItemsProvider.getMemoryPairs(currentLevel);
+        memoryPairs = gameItemsProvider.getMemoryPairs(currentLevel);
         for (MemoryPair memoryPair : memoryPairs) {
             attachChild(memoryPair.getItem1());
             attachChild(memoryPair.getItem2());
+            registerTouchArea(memoryPair.getItem1());
+            registerTouchArea(memoryPair.getItem2());
+        }
+
+        questionMarks = gameItemsProvider.getQuestionMarks(memoryPairs);
+        for (QuestionMarkItem questionMark : questionMarks) {
+            questionMark.setZIndex(1);
+            attachChild(questionMark);
+            registerTouchArea(questionMark);
         }
     }
 
@@ -96,10 +109,57 @@ public class GameScene extends AbstractGameScene {
     }
 
 
+
+    private AnimalId id1;
+    private AnimalId id2;
+
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
 
 
+        for (MemoryPair memoryPair : memoryPairs) {
+            if(memoryPair.getItem1().isClicked()){
+                memoryPair.getItem1().setZIndex(10);
+            }
+            if(memoryPair.getItem2().isClicked()){
+                memoryPair.getItem2().setZIndex(10);
+            }
+        }
+
+        for (MemoryPair memoryPair : memoryPairs) {
+            if(memoryPair.twoItemsClicked()){
+                memoryPair.setFound(true);
+            }
+        }
+
+        int numerOfItemsClicked = 0;
+        for (MemoryPair memoryPair : memoryPairs) {
+            if(!memoryPair.isFound()){
+                if(memoryPair.getItem1().isClicked()){
+                    numerOfItemsClicked++;
+                }
+                if(memoryPair.getItem2().isClicked()){
+                    numerOfItemsClicked++;
+                }
+            }
+        }
+
+
+        if(numerOfItemsClicked > 1){
+            for (MemoryPair memoryPair : memoryPairs) {
+                if(!memoryPair.isFound()){
+                    memoryPair.getItem1().setClicked(false);
+                    memoryPair.getItem2().setClicked(false);
+                    memoryPair.getItem1().setZIndex(0);
+                    memoryPair.getItem2().setZIndex(0);
+                }
+            }
+        }
+
+
+
+        sortChildren();
         super.onManagedUpdate(pSecondsElapsed);
     }
+
 }

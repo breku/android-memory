@@ -17,6 +17,7 @@ import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtla
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 
@@ -41,9 +42,9 @@ public class ResourcesManager {
     private BuildableBitmapTextureAtlas menuTextureAtlas, aboutTextureAtlas, endGameTextureAtlas,
             recordTextureAtlas, gameTypeTextureAtlas, gameTextureAtlas;
     // Game
-    private ITextureRegion backgroundGameTextureRegion;
     private List<ITiledTextureRegion> animalTiledTextureRegionList;
     private List<BuildableBitmapTextureAtlas> gameTextureAtlasList;
+    private TextureRegion questionMarkGameTextureRegion;
     // Splash
     private ITextureRegion splashTextureRegion;
     // Menu
@@ -65,6 +66,7 @@ public class ResourcesManager {
     private List<Sound> winSoundList, loseSoundList, halfWinSoundList;
     private Sound startGameSound, goodClickSound, wrongClickSound;
     private Font whiteFont, blackFont, greenFont, chalkFont;
+    ;
 
     public List<ITiledTextureRegion> getAnimalTiledTextureRegionList() {
         return animalTiledTextureRegionList;
@@ -75,6 +77,10 @@ public class ResourcesManager {
         getInstance().activity = activity;
         getInstance().camera = camera;
         getInstance().vertexBufferObjectManager = vertexBufferObjectManager;
+    }
+
+    public TextureRegion getQuestionMarkGameTextureRegion() {
+        return questionMarkGameTextureRegion;
     }
 
     public static ResourcesManager getInstance() {
@@ -240,9 +246,6 @@ public class ResourcesManager {
         return backgroundGameTypeTextureRegion;
     }
 
-    public ITextureRegion getBackgroundGameTextureRegion() {
-        return backgroundGameTextureRegion;
-    }
 
     public ITextureRegion getLoadingTextureRegion() {
         return loadingTextureRegion;
@@ -361,7 +364,7 @@ public class ResourcesManager {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
         gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 
-        backgroundGameTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "background.png");
+        questionMarkGameTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "questionItem.png");
 
 
         animalTiledTextureRegionList = new ArrayList<>();
@@ -381,7 +384,7 @@ public class ResourcesManager {
                 gameTextureAtlasList.get(i).build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
                 gameTextureAtlasList.get(i).load();
             }
-            gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 1));
+            gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
             gameTextureAtlas.load();
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
             e.printStackTrace();

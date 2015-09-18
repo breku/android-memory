@@ -3,8 +3,10 @@ package com.thinkfaster.service;
 import android.util.Log;
 import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.model.Level;
+import com.thinkfaster.model.shape.AnimalId;
 import com.thinkfaster.model.shape.MemoryItem;
 import com.thinkfaster.model.shape.MemoryPair;
+import com.thinkfaster.model.shape.QuestionMarkItem;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.background.IBackground;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
@@ -35,14 +37,25 @@ public class GameItemsProvider {
         return new Background(Color.BLUE);
     }
 
+    public List<QuestionMarkItem> getQuestionMarks(List<MemoryPair> memoryPairs) {
+        final List<QuestionMarkItem> result = new ArrayList<>();
+        for (final MemoryPair memoryPair : memoryPairs) {
+            final QuestionMarkItem questionMarkItem1 = createQuestionMarkItem(memoryPair.getItem1());
+            final QuestionMarkItem questionMarkItem2 = createQuestionMarkItem(memoryPair.getItem2());
+            result.add(questionMarkItem1);
+            result.add(questionMarkItem2);
+        }
+        return result;
+    }
+
     public List<MemoryPair> getMemoryPairs(Level level) {
-        Log.i(TAG,">> Getting memory pairs for level=" + level.name());
+        Log.i(TAG, ">> Getting memory pairs for level=" + level.name());
         final List<MemoryPair> result = new ArrayList<>();
 
-        final Set<Pair<Integer, Integer>> animalIds = randomizer.getRandomAnimalIds(level);
-        final Set<Pair<Integer, Integer>> animalPositions = randomizer.getRandomAnimalPositions(level);
-        final Iterator<Pair<Integer, Integer>> positionIterator = animalPositions.iterator();
-        for (Pair<Integer, Integer> animalId : animalIds) {
+        final Set<AnimalId> animalIds = randomizer.getRandomAnimalIds(level);
+        final Set<AnimalId> animalPositions = randomizer.getRandomAnimalPositions(level);
+        final Iterator<AnimalId> positionIterator = animalPositions.iterator();
+        for (final AnimalId animalId : animalIds) {
 
             final Pair<Integer, Integer> position1 = positionIterator.next();
             final Pair<Integer, Integer> position2 = positionIterator.next();
@@ -51,20 +64,21 @@ public class GameItemsProvider {
             final MemoryItem memoryItem2 = createMemoryItem(animalId, level, position2);
             result.add(new MemoryPair(memoryItem1, memoryItem2));
         }
-        Log.i(TAG,"<< Getting memory pairs finished with result=" + result);
+        Log.i(TAG, "<< Getting memory pairs finished with result=" + result);
         return result;
     }
 
-    private MemoryItem createMemoryItem(Pair<Integer, Integer> animalId, Level level, Pair<Integer, Integer> position) {
-        Log.d(TAG,String.format(">> Creating memory item with animalId=%s level=%s position=%s",animalId,level.name(),position));
-        final ITiledTextureRegion animalTiledTexture = resourcesManager.getAnimalTiledTexture(animalId.getLeft());
-        int positionX = calculatePositionX(position.getLeft(),level.getLevelOffsetX());
-        int positionY = calculatePositionY(position.getRight());
+    private QuestionMarkItem createQuestionMarkItem(MemoryItem memoryItem) {
+        return new QuestionMarkItem(memoryItem.getAnimalId(), memoryItem.getX(), memoryItem.getY());
+    }
 
-        final MemoryItem memoryItem = new MemoryItem(positionX, positionY, animalTiledTexture);
-        memoryItem.setScale(level.getItemScale());
-        memoryItem.setCurrentTileIndex(animalId.getRight());
-        Log.d(TAG,String.format("<< Memory item created=%s",memoryItem));
+    private MemoryItem createMemoryItem(AnimalId animalId, Level level, Pair<Integer, Integer> position) {
+        Log.d(TAG, String.format(">> Creating memory item with animalId=%s level=%s position=%s", animalId, level.name(), position));
+        final ITiledTextureRegion animalTiledTexture = resourcesManager.getAnimalTiledTexture(animalId.getLeft());
+        int positionX = calculatePositionX(position.getLeft(), level.getLevelOffsetX());
+        int positionY = calculatePositionY(position.getRight());
+        final MemoryItem memoryItem = new MemoryItem(animalId, positionX, positionY, animalTiledTexture);
+        Log.d(TAG, String.format("<< Memory item created=%s", memoryItem));
         return memoryItem;
     }
 
