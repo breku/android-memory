@@ -11,6 +11,8 @@ import com.thinkfaster.service.GameItemsProvider;
 import com.thinkfaster.util.ContextConstants;
 import com.thinkfaster.util.SceneType;
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
 
 import java.util.List;
@@ -82,7 +84,6 @@ public class GameScene extends AbstractGameScene {
         for (QuestionMarkItem questionMark : questionMarks) {
             questionMark.setZIndex(1);
             attachChild(questionMark);
-            registerTouchArea(questionMark);
         }
     }
 
@@ -145,16 +146,23 @@ public class GameScene extends AbstractGameScene {
         }
 
 
-        if(numerOfItemsClicked > 1){
-            for (MemoryPair memoryPair : memoryPairs) {
-                if(!memoryPair.isFound()){
-                    memoryPair.getItem1().setClicked(false);
-                    memoryPair.getItem2().setClicked(false);
-                    memoryPair.getItem1().setZIndex(0);
-                    memoryPair.getItem2().setZIndex(0);
+        final int finalNumerOfItemsClicked = numerOfItemsClicked;
+        engine.registerUpdateHandler(new TimerHandler(0.5f,new ITimerCallback() {
+            @Override
+            public void onTimePassed(TimerHandler pTimerHandler) {
+                if(finalNumerOfItemsClicked > 1){
+                    for (MemoryPair memoryPair : memoryPairs) {
+                        if(!memoryPair.isFound()){
+                            memoryPair.getItem1().setClicked(false);
+                            memoryPair.getItem2().setClicked(false);
+                            memoryPair.getItem1().setZIndex(0);
+                            memoryPair.getItem2().setZIndex(0);
+                        }
+                    }
                 }
             }
-        }
+        }));
+
 
 
 
