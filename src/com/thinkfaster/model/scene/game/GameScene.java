@@ -1,10 +1,12 @@
 package com.thinkfaster.model.scene.game;
 
+import com.thinkfaster.handler.FoundMemoryPairsUpdateHandler;
+import com.thinkfaster.handler.HideClickedItemsUpdateHandler;
+import com.thinkfaster.handler.ShowClickedItemsUpdateHandler;
 import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.manager.SceneManager;
 import com.thinkfaster.matcher.ClassTouchAreaMacher;
 import com.thinkfaster.model.Level;
-import com.thinkfaster.model.shape.AnimalId;
 import com.thinkfaster.model.shape.MemoryPair;
 import com.thinkfaster.model.shape.QuestionMarkItem;
 import com.thinkfaster.service.GameItemsProvider;
@@ -17,6 +19,8 @@ import org.andengine.entity.sprite.Sprite;
 
 import java.util.List;
 
+import static com.thinkfaster.util.ContextConstants.MEMORY_ITEM_SHOWTIME;
+
 /**
  * User: Breku
  * Date: 21.09.13
@@ -24,11 +28,12 @@ import java.util.List;
 public class GameScene extends AbstractGameScene {
 
 
-    List<QuestionMarkItem> questionMarks;
+    private List<QuestionMarkItem> questionMarks;
     private HUD gameHUD;
     private GameItemsProvider gameItemsProvider;
     private Level currentLevel;
     private List<MemoryPair> memoryPairs;
+    private boolean showingItems;
 
     /**
      * @param objects objects[0] - levelDifficulty
@@ -46,10 +51,18 @@ public class GameScene extends AbstractGameScene {
 
     @Override
     public void createScene(Object... objects) {
+        clear();
         init(objects);
         createBackground();
         createMemoryItems();
         createHUD();
+        registerUpdateHandlers();
+    }
+
+    private void clear() {
+        clearChildScene();
+        clearUpdateHandlers();
+        clearTouchAreas();
     }
 
     @Override
@@ -71,6 +84,12 @@ public class GameScene extends AbstractGameScene {
         ResourcesManager.getInstance().unloadGameTextures();
     }
 
+    private void registerUpdateHandlers() {
+        registerUpdateHandler(new FoundMemoryPairsUpdateHandler(memoryPairs));
+        registerUpdateHandler(new ShowClickedItemsUpdateHandler(memoryPairs));
+        registerUpdateHandler(new HideClickedItemsUpdateHandler(memoryPairs,engine));
+    }
+
     private void createMemoryItems() {
         memoryPairs = gameItemsProvider.getMemoryPairs(currentLevel);
         for (MemoryPair memoryPair : memoryPairs) {
@@ -88,8 +107,7 @@ public class GameScene extends AbstractGameScene {
     }
 
     private void init(Object... objects) {
-        clearUpdateHandlers();
-        clearTouchAreas();
+
         initializeLevel(objects);
     }
 
@@ -98,11 +116,9 @@ public class GameScene extends AbstractGameScene {
     }
 
     private void createBackground() {
-        unregisterTouchAreas(new ClassTouchAreaMacher(Sprite.class));
-        clearChildScene();
+
         setBackground(gameItemsProvider.getBackground());
     }
-
 
     private void createHUD() {
         gameHUD = new HUD();
@@ -111,57 +127,29 @@ public class GameScene extends AbstractGameScene {
 
 
 
-    private AnimalId id1;
-    private AnimalId id2;
+
+
+    private void hideMemoryItems() {
+        showingItems = true;
+
+        registerUpdateHandler(new TimerHandler(MEMORY_ITEM_SHOWTIME, new ITimerCallback() {
+            @Override
+            public void onTimePassed(TimerHandler pTimerHandler) {
+                for (MemoryPair memoryPair : memoryPairs) {
+                    if (!memoryPair.isFound()) {
+                        memoryPair.getItem1().setClicked(false);
+                        memoryPair.getItem2().setClicked(false);
+                        memoryPair.getItem1().setZIndex(0);
+                        memoryPair.getItem2().setZIndex(0);
+                    }
+                }
+                showingItems = false;
+            }
+        }));
+    }
 
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
-
-
-        for (MemoryPair memoryPair : memoryPairs) {
-            if(memoryPair.getItem1().isClicked()){
-                memoryPair.getItem1().setZIndex(10);
-            }
-            if(memoryPair.getItem2().isClicked()){
-                memoryPair.getItem2().setZIndex(10);
-            }
-        }
-
-        for (MemoryPair memoryPair : memoryPairs) {
-            if(memoryPair.twoItemsClicked()){
-                memoryPair.setFound(true);
-            }
-        }
-
-        int numerOfItemsClicked = 0;
-        for (MemoryPair memoryPair : memoryPairs) {
-            if(!memoryPair.isFound()){
-                if(memoryPair.getItem1().isClicked()){
-                    numerOfItemsClicked++;
-                }
-                if(memoryPair.getItem2().isClicked()){
-                    numerOfItemsClicked++;
-                }
-            }
-        }
-
-
-        final int finalNumerOfItemsClicked = numerOfItemsClicked;
-        engine.registerUpdateHandler(new TimerHandler(0.5f,new ITimerCallback() {
-            @Override
-            public void onTimePassed(TimerHandler pTimerHandler) {
-                if(finalNumerOfItemsClicked > 1){
-                    for (MemoryPair memoryPair : memoryPairs) {
-                        if(!memoryPair.isFound()){
-                            memoryPair.getItem1().setClicked(false);
-                            memoryPair.getItem2().setClicked(false);
-                            memoryPair.getItem1().setZIndex(0);
-                            memoryPair.getItem2().setZIndex(0);
-                        }
-                    }
-                }
-            }
-        }));
 
 
 
@@ -169,5 +157,6 @@ public class GameScene extends AbstractGameScene {
         sortChildren();
         super.onManagedUpdate(pSecondsElapsed);
     }
+
 
 }

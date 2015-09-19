@@ -20,7 +20,7 @@ public class ContextConstants implements Constants, LevelConstants {
     public static final int NUMBER_OF_ANIMALS = 25;
     public static final int NUMBER_OF_SOUNDS_PER_ANIMAL = 4;
 
-
+    public static final float MEMORY_ITEM_SHOWTIME = 1.0f;
 
 
     public static final int NUMBER_OF_ANIMALS_PER_IMAGE = 4;
