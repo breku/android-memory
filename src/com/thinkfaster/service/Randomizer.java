@@ -36,7 +36,5 @@ public class Randomizer {
             result.add(new AnimalId(coordX, coordY));
         }
         return result;
-
-
     }
 }

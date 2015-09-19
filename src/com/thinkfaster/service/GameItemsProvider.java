@@ -32,7 +32,6 @@ public class GameItemsProvider {
         this.resourcesManager = resources_manager;
     }
 
-
     public IBackground getBackground() {
         return new Background(Color.WHITE);
     }
@@ -91,6 +90,4 @@ public class GameItemsProvider {
         final int offsetY = 60;
         return offsetY + coordY * 100;
     }
-
-
 }

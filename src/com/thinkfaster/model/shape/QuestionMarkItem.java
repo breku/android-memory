@@ -16,5 +16,4 @@ public class QuestionMarkItem extends Sprite {
         this.animalId = animalId;
         setScale(ContextConstants.MEMORY_ITEM_SCALE);
     }
-
 }

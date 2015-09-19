@@ -39,11 +39,9 @@ public class MemoryItem extends AnimatedSprite {
                     isClicked = true;
                     return true;
             }
-
         }
         return false;
     }
-
 
     @Override
     public String toString() {

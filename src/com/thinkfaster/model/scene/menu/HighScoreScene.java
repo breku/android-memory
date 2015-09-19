@@ -5,23 +5,16 @@ import com.thinkfaster.manager.SceneManager;
 import com.thinkfaster.model.scene.BaseScene;
 import com.thinkfaster.util.ContextConstants;
 import com.thinkfaster.util.SceneType;
-import org.andengine.entity.modifier.ColorModifier;
-import org.andengine.entity.modifier.FadeInModifier;
-import org.andengine.entity.modifier.ParallelEntityModifier;
-import org.andengine.entity.modifier.RotationModifier;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.util.adt.color.Color;
 
 /**
  * User: Breku
  * Date: 06.10.13
  */
 public class HighScoreScene extends BaseScene implements IOnSceneTouchListener {
-
 
     /**
      * Constructor
@@ -39,17 +32,6 @@ public class HighScoreScene extends BaseScene implements IOnSceneTouchListener {
         createBackground();
         setOnSceneTouchListener(this);
     }
-
-
-
-    private void createBackground() {
-        attachChild(new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2,
-                ResourcesManager.getInstance().getRecordBackgroundTextureRegion(), vertexBufferObjectManager));
-
-    }
-
-
-
 
     @Override
     public void onBackKeyPressed() {
@@ -72,5 +54,10 @@ public class HighScoreScene extends BaseScene implements IOnSceneTouchListener {
             SceneManager.getInstance().loadMenuScene(this);
         }
         return false;
+    }
+
+    private void createBackground() {
+        attachChild(new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2,
+                ResourcesManager.getInstance().getRecordBackgroundTextureRegion(), vertexBufferObjectManager));
     }
 }

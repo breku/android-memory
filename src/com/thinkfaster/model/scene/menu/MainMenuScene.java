@@ -77,7 +77,6 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         final IMenuItem exitItem = new ScaleMenuItemDecorator(new SpriteMenuItem(EXIT, ResourcesManager.getInstance().getButtonExitTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
         final IMenuItem recordsItem = new ScaleMenuItemDecorator(new SpriteMenuItem(RECORDS, ResourcesManager.getInstance().getButtonHighScoreTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
 
-
         menuScene.addMenuItem(newGameItem);
         menuScene.addMenuItem(aboutItem);
         menuScene.addMenuItem(exitItem);
@@ -94,7 +93,5 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         menuScene.setOnMenuItemClickListener(this);
 
         setChildScene(menuScene);
-
     }
-
 }

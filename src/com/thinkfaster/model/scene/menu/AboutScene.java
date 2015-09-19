@@ -22,10 +22,6 @@ public class AboutScene extends BaseScene implements IOnSceneTouchListener {
         setOnSceneTouchListener(this);
     }
 
-    private void createBackground() {
-        attachChild(new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2, resourcesManager.getAboutBackgroundTextureRegion(), vertexBufferObjectManager));
-    }
-
     @Override
     public void onBackKeyPressed() {
         SceneManager.getInstance().loadMenuScene(this);
@@ -47,5 +43,9 @@ public class AboutScene extends BaseScene implements IOnSceneTouchListener {
             SceneManager.getInstance().loadMenuScene(this);
         }
         return false;
+    }
+
+    private void createBackground() {
+        attachChild(new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2, resourcesManager.getAboutBackgroundTextureRegion(), vertexBufferObjectManager));
     }
 }

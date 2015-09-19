@@ -28,7 +28,6 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
     public void createScene(Object... objects) {
         createBackground();
         createButtons();
-
     }
 
     @Override
@@ -78,11 +77,8 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
         mediumSizeGame.setPosition(210, 257);
         bigSizeGame.setPosition(210, 187);
 
-
         menuScene.setOnMenuItemClickListener(this);
 
         setChildScene(menuScene);
-
-
     }
 }

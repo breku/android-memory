@@ -19,10 +19,6 @@ public class LoadingScene extends BaseScene {
                 "loading...", vertexBufferObjectManager));
     }
 
-    private void createBackground() {
-        attachChild(new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2, resourcesManager.getLoadingTextureRegion(), vertexBufferObjectManager));
-    }
-
     @Override
     public void onBackKeyPressed() {
         return;
@@ -35,5 +31,9 @@ public class LoadingScene extends BaseScene {
 
     @Override
     public void disposeScene() {
+    }
+
+    private void createBackground() {
+        attachChild(new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2, resourcesManager.getLoadingTextureRegion(), vertexBufferObjectManager));
     }
 }

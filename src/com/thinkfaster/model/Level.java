@@ -20,7 +20,6 @@ public enum Level {
         this.levelOffsetX = levelOffsetX;
     }
 
-
     public int getNumberOfItemsX() {
         return numberOfItemsX;
     }

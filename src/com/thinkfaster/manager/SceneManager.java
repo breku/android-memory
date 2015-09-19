@@ -85,7 +85,6 @@ public class SceneManager {
 //        AdBuddiz.showAd(activity);
     }
 
-
     public void loadGameScene(final Level level) {
         setScene(loadingScene);
         ResourcesManager.getInstance().unloadGameTypeTextures();
@@ -151,7 +150,6 @@ public class SceneManager {
             default:
                 throw new UnsupportedOperationException();
         }
-
     }
 
     public void loadEndGameScene(double score) {
@@ -161,11 +159,9 @@ public class SceneManager {
         ResourcesManager.getInstance().unloadGameTextures();
     }
 
-
     public BaseScene getCurrentScene() {
         return currentScene;
     }
-
 
     private void disposeSplashScene() {
         splashScene.disposeScene();

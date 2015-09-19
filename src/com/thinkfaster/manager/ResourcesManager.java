@@ -87,7 +87,6 @@ public class ResourcesManager {
         return INSTANCE;
     }
 
-
     public void loadAboutResources() {
         loadAboutGraphics();
     }
@@ -137,7 +136,6 @@ public class ResourcesManager {
         splashTextureAtlas.unload();
         splashTextureRegion = null;
     }
-
 
     public void unloadAboutTextures() {
         aboutTextureAtlas.unload();
@@ -245,7 +243,6 @@ public class ResourcesManager {
     public ITextureRegion getBackgroundGameTypeTextureRegion() {
         return backgroundGameTypeTextureRegion;
     }
-
 
     public ITextureRegion getLoadingTextureRegion() {
         return loadingTextureRegion;
@@ -366,10 +363,8 @@ public class ResourcesManager {
 
         questionMarkGameTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "questionItem.png");
 
-
         animalTiledTextureRegionList = new ArrayList<>();
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/animals/");
-
 
         gameTextureAtlasList = new ArrayList<>();
         for (int i = 0; i < ContextConstants.NUMBER_OF_ANIMALS + 1; i++) {
@@ -389,7 +384,6 @@ public class ResourcesManager {
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
             e.printStackTrace();
         }
-
     }
 
     private void loadGameMusic() {
@@ -411,12 +405,9 @@ public class ResourcesManager {
             startGameSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "go.ogg");
             goodClickSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "goodClick.ogg");
             wrongClickSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "wrongClick.ogg");
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private void loadEndGameGraphics() {
@@ -453,8 +444,6 @@ public class ResourcesManager {
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private void loadGameTypeGraphics() {

@@ -1,6 +1,5 @@
 package com.thinkfaster.activity;
 
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -74,7 +73,6 @@ public class MyActivity extends BaseGameActivity {
         Log.i(TAG, ">> Creating scene");
         SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
         Log.i(TAG, "<< Creating scene finished");
-
     }
 
     /**
@@ -106,7 +104,6 @@ public class MyActivity extends BaseGameActivity {
         }
         return false;
     }
-
 
     @Override
     protected void onCreate(final Bundle pSavedInstanceState) {
@@ -146,7 +143,6 @@ public class MyActivity extends BaseGameActivity {
                 new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
                         FrameLayout.LayoutParams.MATCH_PARENT);
         frameLayoutLayoutParams.gravity = Gravity.BOTTOM;
-
 
         this.setContentView(frameLayout, frameLayoutLayoutParams);
         Log.i(TAG, "<< Setting content view finished");

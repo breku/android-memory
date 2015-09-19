@@ -31,7 +31,6 @@ public class ShowClickedItemsUpdateHandler extends AbstractGameUpdateHandler {
         }
     }
 
-
     private boolean canShowItem(MemoryItem memoryItem) {
         return getNumberOfVisibleActiveItems() < 2 && memoryItem.isClicked() && !memoryItem.isItemVisible();
     }

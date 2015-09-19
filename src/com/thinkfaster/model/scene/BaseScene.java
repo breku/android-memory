@@ -30,7 +30,7 @@ public abstract class BaseScene extends Scene {
         createScene(objects);
     }
 
-    public void initializeServices(){
+    public void initializeServices() {
         // intentionally left blank
     }
 

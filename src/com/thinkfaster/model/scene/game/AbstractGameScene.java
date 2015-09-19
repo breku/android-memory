@@ -7,7 +7,6 @@ import com.thinkfaster.model.scene.BaseScene;
  */
 public abstract class AbstractGameScene extends BaseScene {
 
-
     public AbstractGameScene(Object... objects) {
         super(objects);
     }

@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class FoundMemoryPairsUpdateHandler extends AbstractGameUpdateHandler {
 
-
     private static final String TAG = "FoundMemoryPairsUpdateHandler";
 
     public FoundMemoryPairsUpdateHandler(List<MemoryPair> memoryPairs) {
@@ -26,6 +25,4 @@ public class FoundMemoryPairsUpdateHandler extends AbstractGameUpdateHandler {
             }
         }
     }
-
-
 }

@@ -26,14 +26,10 @@ public class TimeUpdateHandler extends AbstractGameUpdateHandler {
             startTime = System.currentTimeMillis();
         }
         updateTime();
-
     }
-
 
     private void updateTime() {
         long elapsedTime = (System.currentTimeMillis() - startTime) / 10;
-        timerText.setText(elapsedTime / 100 + "." + (elapsedTime % 100)/10);
+        timerText.setText(elapsedTime / 100 + "." + (elapsedTime % 100) / 10);
     }
-
-
 }

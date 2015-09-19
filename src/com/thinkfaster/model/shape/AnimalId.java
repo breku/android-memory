@@ -9,7 +9,6 @@ import org.apache.commons.lang3.tuple.Pair;
  */
 public class AnimalId extends MutablePair<Integer, Integer> {
 
-
     private static final String ID_FORMAT = "%s-%s";
 
     public AnimalId(int textureId, int tileId) {
