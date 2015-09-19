@@ -1,5 +1,7 @@
 package com.thinkfaster.handler;
 
+import android.util.Log;
+import com.thinkfaster.model.shape.MemoryItem;
 import com.thinkfaster.model.shape.MemoryPair;
 
 import java.util.List;
@@ -9,6 +11,8 @@ import java.util.List;
  */
 public class ShowClickedItemsUpdateHandler extends AbstractGameUpdateHandler {
 
+    private static final String TAG = "ShowClickedItemsUpdateHandler";
+
     public ShowClickedItemsUpdateHandler(List<MemoryPair> memoryPairs) {
         super(memoryPairs);
     }
@@ -17,19 +21,23 @@ public class ShowClickedItemsUpdateHandler extends AbstractGameUpdateHandler {
     public void onUpdate(float pSecondsElapsed) {
 
         for (MemoryPair memoryPair : memoryPairs) {
-            if (getNumberOfClickedItems() < 3) {
-                if (memoryPair.getItem1().isClicked()) {
-                    memoryPair.getItem1().setZIndex(10);
-                }
-                if (memoryPair.getItem2().isClicked()) {
-                    memoryPair.getItem2().setZIndex(10);
-                }
+
+            if (canShowItem(memoryPair.getItem1())) {
+                showItem(memoryPair.getItem1());
+            }
+            if (canShowItem(memoryPair.getItem2())) {
+                showItem(memoryPair.getItem2());
             }
         }
     }
 
-    @Override
-    public void reset() {
 
+    private boolean canShowItem(MemoryItem memoryItem) {
+        return getNumberOfVisibleActiveItems() < 2 && memoryItem.isClicked() && !memoryItem.isItemVisible();
+    }
+
+    private void showItem(MemoryItem memoryItem) {
+        Log.i(TAG, ">> Showing item " + memoryItem);
+        memoryItem.setItemVisible(true);
     }
 }

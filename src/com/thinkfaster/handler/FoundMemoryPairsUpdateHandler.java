@@ -1,7 +1,7 @@
 package com.thinkfaster.handler;
 
+import android.util.Log;
 import com.thinkfaster.model.shape.MemoryPair;
-import org.andengine.engine.handler.IUpdateHandler;
 
 import java.util.List;
 
@@ -11,6 +11,8 @@ import java.util.List;
 public class FoundMemoryPairsUpdateHandler extends AbstractGameUpdateHandler {
 
 
+    private static final String TAG = "FoundMemoryPairsUpdateHandler";
+
     public FoundMemoryPairsUpdateHandler(List<MemoryPair> memoryPairs) {
         super(memoryPairs);
     }
@@ -18,14 +20,12 @@ public class FoundMemoryPairsUpdateHandler extends AbstractGameUpdateHandler {
     @Override
     public void onUpdate(float pSecondsElapsed) {
         for (MemoryPair memoryPair : memoryPairs) {
-            if (memoryPair.twoItemsClicked()) {
+            if (!memoryPair.isFound() && memoryPair.twoItemsVisible()) {
+                Log.i(TAG, ">> Pair found: " + memoryPair);
                 memoryPair.setFound(true);
             }
         }
     }
 
-    @Override
-    public void reset() {
 
-    }
 }
