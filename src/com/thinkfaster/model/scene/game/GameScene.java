@@ -3,6 +3,7 @@ package com.thinkfaster.model.scene.game;
 import com.thinkfaster.handler.FoundMemoryPairsUpdateHandler;
 import com.thinkfaster.handler.HideClickedItemsUpdateHandler;
 import com.thinkfaster.handler.ShowClickedItemsUpdateHandler;
+import com.thinkfaster.handler.TimeUpdateHandler;
 import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.manager.SceneManager;
 import com.thinkfaster.model.Level;
@@ -12,6 +13,9 @@ import com.thinkfaster.service.GameItemsProvider;
 import com.thinkfaster.util.ContextConstants;
 import com.thinkfaster.util.SceneType;
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.entity.text.Text;
+import org.andengine.entity.text.TextOptions;
+import org.andengine.util.adt.align.HorizontalAlign;
 
 import java.util.List;
 
@@ -27,7 +31,7 @@ public class GameScene extends AbstractGameScene {
     private GameItemsProvider gameItemsProvider;
     private Level currentLevel;
     private List<MemoryPair> memoryPairs;
-    private boolean showingItems;
+    private Text timerText;
 
     /**
      * @param objects objects[0] - levelDifficulty
@@ -82,6 +86,7 @@ public class GameScene extends AbstractGameScene {
         registerUpdateHandler(new FoundMemoryPairsUpdateHandler(memoryPairs));
         registerUpdateHandler(new ShowClickedItemsUpdateHandler(memoryPairs));
         registerUpdateHandler(new HideClickedItemsUpdateHandler(memoryPairs, engine));
+        registerUpdateHandler(new TimeUpdateHandler(memoryPairs, timerText));
     }
 
     private void createMemoryItems() {
@@ -116,16 +121,24 @@ public class GameScene extends AbstractGameScene {
 
     private void createHUD() {
         gameHUD = new HUD();
+
+        Text timeText = new Text(380, 440, resourcesManager.getBlackFont(), "Time: ", new TextOptions(HorizontalAlign.LEFT), vertexBufferObjectManager);
+        timerText = new Text(490, 440, resourcesManager.getBlackFont(), "0123456789", 30, new TextOptions(HorizontalAlign.CENTER), vertexBufferObjectManager);
+        timerText.setText("00.00");
+
+        gameHUD.attachChild(timeText);
+        gameHUD.attachChild(timerText);
+
         camera.setHUD(gameHUD);
     }
 
 
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
+        super.onManagedUpdate(pSecondsElapsed);
 
 
         sortChildren();
-        super.onManagedUpdate(pSecondsElapsed);
     }
 
 

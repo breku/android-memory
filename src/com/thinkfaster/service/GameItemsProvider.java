@@ -89,7 +89,7 @@ public class GameItemsProvider {
 
     private int calculatePositionY(int coordY) {
         final int offsetY = 60;
-        return offsetY + coordY * 110;
+        return offsetY + coordY * 100;
     }
 
 
