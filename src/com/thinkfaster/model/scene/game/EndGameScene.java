@@ -26,15 +26,8 @@ public class EndGameScene extends BaseScene implements IOnSceneTouchListener {
 
     @Override
     public void createScene(Object... objects) {
-        createBackground((Integer) objects[0]);
+        createBackground((double) objects[0]);
         setOnSceneTouchListener(this);
-    }
-
-    private void createBackground(Integer score) {
-        attachChild(new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2,
-                ResourcesManager.getInstance().getEndGameBackgroundTextureRegion(), vertexBufferObjectManager));
-        attachChild(new Text(400, 200, ResourcesManager.getInstance().getWhiteFont(),
-                "score: " + score.toString(), vertexBufferObjectManager));
     }
 
     @Override
@@ -58,5 +51,12 @@ public class EndGameScene extends BaseScene implements IOnSceneTouchListener {
             SceneManager.getInstance().loadMenuScene(this);
         }
         return false;
+    }
+
+    private void createBackground(double score) {
+        attachChild(new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2,
+                ResourcesManager.getInstance().getEndGameBackgroundTextureRegion(), vertexBufferObjectManager));
+        attachChild(new Text(400, 200, ResourcesManager.getInstance().getWhiteFont(),
+                "score: " + String.valueOf(score), vertexBufferObjectManager));
     }
 }

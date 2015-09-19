@@ -1,22 +1,23 @@
 package com.thinkfaster.model.scene.game;
 
-import com.thinkfaster.handler.FoundMemoryPairsUpdateHandler;
-import com.thinkfaster.handler.HideClickedItemsUpdateHandler;
-import com.thinkfaster.handler.ShowClickedItemsUpdateHandler;
-import com.thinkfaster.handler.TimeUpdateHandler;
+import android.util.Log;
+import com.thinkfaster.handler.*;
 import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.manager.SceneManager;
 import com.thinkfaster.model.Level;
+import com.thinkfaster.model.MemoryConfiguration;
 import com.thinkfaster.model.shape.MemoryPair;
 import com.thinkfaster.model.shape.QuestionMarkItem;
 import com.thinkfaster.service.GameItemsProvider;
 import com.thinkfaster.util.ContextConstants;
 import com.thinkfaster.util.SceneType;
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.util.adt.align.HorizontalAlign;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -25,13 +26,14 @@ import java.util.List;
  */
 public class GameScene extends AbstractGameScene {
 
-
+    private static final String TAG = "GameScene";
     private List<QuestionMarkItem> questionMarks;
     private HUD gameHUD;
     private GameItemsProvider gameItemsProvider;
     private Level currentLevel;
     private List<MemoryPair> memoryPairs;
     private Text timerText;
+    private MemoryConfiguration memoryConfiguration;
 
     /**
      * @param objects objects[0] - levelDifficulty
@@ -45,6 +47,7 @@ public class GameScene extends AbstractGameScene {
     @Override
     public void initializeServices() {
         gameItemsProvider = new GameItemsProvider(resourcesManager);
+        memoryConfiguration = new MemoryConfiguration();
     }
 
     @Override
@@ -83,10 +86,18 @@ public class GameScene extends AbstractGameScene {
     }
 
     private void registerUpdateHandlers() {
-        registerUpdateHandler(new FoundMemoryPairsUpdateHandler(memoryPairs));
-        registerUpdateHandler(new ShowClickedItemsUpdateHandler(memoryPairs));
-        registerUpdateHandler(new HideClickedItemsUpdateHandler(memoryPairs, engine));
-        registerUpdateHandler(new TimeUpdateHandler(memoryPairs, timerText));
+        final List<IUpdateHandler> updateHandlerList = new LinkedList<>();
+        updateHandlerList.add(new FoundMemoryPairsUpdateHandler(memoryPairs));
+        updateHandlerList.add(new ShowClickedItemsUpdateHandler(memoryPairs));
+        updateHandlerList.add(new HideClickedItemsUpdateHandler(memoryPairs, engine));
+        updateHandlerList.add(new TimeUpdateHandler(memoryPairs, timerText));
+        updateHandlerList.add(new FinishGameUpdateHandler(memoryPairs, currentLevel, memoryConfiguration));
+
+        for (IUpdateHandler iUpdateHandler : updateHandlerList) {
+            registerUpdateHandler(iUpdateHandler);
+        }
+
+        Log.i(TAG, ">> Registered handlers: " + updateHandlerList);
     }
 
     private void createMemoryItems() {
@@ -132,14 +143,18 @@ public class GameScene extends AbstractGameScene {
         camera.setHUD(gameHUD);
     }
 
+    private double getScore() {
+        return Double.parseDouble(String.valueOf(timerText.getText()));
+    }
 
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
         super.onManagedUpdate(pSecondsElapsed);
 
+        if (memoryConfiguration.isGameFinished()) {
+            SceneManager.getInstance().loadEndGameScene(getScore());
+        }
 
         sortChildren();
     }
-
-
 }

@@ -1,6 +1,5 @@
 package com.thinkfaster.manager;
 
-import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 import com.thinkfaster.model.Level;
 import com.thinkfaster.model.scene.BaseScene;
 import com.thinkfaster.model.scene.LoadingScene;
@@ -11,7 +10,9 @@ import com.thinkfaster.model.scene.game.GameTypeScene;
 import com.thinkfaster.model.scene.menu.AboutScene;
 import com.thinkfaster.model.scene.menu.HighScoreScene;
 import com.thinkfaster.model.scene.menu.MainMenuScene;
-import com.thinkfaster.util.*;
+import com.thinkfaster.util.AppRater;
+import com.thinkfaster.util.ContextConstants;
+import com.thinkfaster.util.SceneType;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface;
@@ -28,8 +29,8 @@ public class SceneManager {
     private BaseGameActivity activity;
 
     private SceneType currentSceneType = SceneType.SPLASH;
-    private BaseScene singlePlayerGameScene, menuScene, loadingScene, splashScene, currentScene,
-            aboutScene, optionsScene, endGameScene, recordScene, gameTypeScene;
+    private BaseScene gameScene, menuScene, loadingScene, splashScene, currentScene,
+            aboutScene, endGameScene, recordScene, gameTypeScene;
 
     public static void prepareManager(BaseGameActivity activity) {
         getInstance().activity = activity;
@@ -93,8 +94,8 @@ public class SceneManager {
             public void onTimePassed(TimerHandler pTimerHandler) {
                 ResourcesManager.getInstance().getEngine().unregisterUpdateHandler(pTimerHandler);
                 ResourcesManager.getInstance().loadGameResources();
-                singlePlayerGameScene = new GameScene(level);
-                setScene(singlePlayerGameScene);
+                gameScene = new GameScene(level);
+                setScene(gameScene);
             }
         }));
     }
@@ -130,7 +131,7 @@ public class SceneManager {
                 break;
             case SINGLE_PLAYER_GAME:
                 setScene(loadingScene);
-                singlePlayerGameScene.disposeScene();
+                gameScene.disposeScene();
                 ResourcesManager.getInstance().unloadGameTextures();
                 ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ContextConstants.LOADING_SCENE_TIME / 4, new ITimerCallback() {
                     @Override
@@ -153,10 +154,10 @@ public class SceneManager {
 
     }
 
-    public void loadEndGameScene(Integer score) {
+    public void loadEndGameScene(double score) {
         endGameScene = new EndGameScene(score);
         setScene(endGameScene);
-        singlePlayerGameScene.disposeScene();
+        gameScene.disposeScene();
         ResourcesManager.getInstance().unloadGameTextures();
     }
 
