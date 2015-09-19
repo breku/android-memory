@@ -11,7 +11,7 @@ import java.util.List;
 import static com.thinkfaster.util.ContextConstants.MEMORY_ITEM_SHOWTIME;
 
 /**
- * Created by brekol on 19.09.15.
+ * Hide items if they are not matched
  */
 public class HideClickedItemsUpdateHandler extends AbstractGameUpdateHandler {
 

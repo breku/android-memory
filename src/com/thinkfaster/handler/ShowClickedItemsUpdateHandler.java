@@ -7,7 +7,7 @@ import com.thinkfaster.model.shape.MemoryPair;
 import java.util.List;
 
 /**
- * Created by brekol on 19.09.15.
+ * Changes visibility of clicked items
  */
 public class ShowClickedItemsUpdateHandler extends AbstractGameUpdateHandler {
 

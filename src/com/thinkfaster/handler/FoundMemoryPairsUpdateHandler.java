@@ -6,7 +6,7 @@ import com.thinkfaster.model.shape.MemoryPair;
 import java.util.List;
 
 /**
- * Created by brekol on 19.09.15.
+ * Mark items as found if they make a match
  */
 public class FoundMemoryPairsUpdateHandler extends AbstractGameUpdateHandler {
 
