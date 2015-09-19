@@ -362,7 +362,7 @@ public class ResourcesManager {
         }
 
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
-        gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+        gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.DEFAULT);
 
         questionMarkGameTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "questionItem.png");
 
@@ -373,7 +373,7 @@ public class ResourcesManager {
 
         gameTextureAtlasList = new ArrayList<>();
         for (int i = 0; i < ContextConstants.NUMBER_OF_ANIMALS + 1; i++) {
-            gameTextureAtlasList.add(new BuildableBitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR));
+            gameTextureAtlasList.add(new BuildableBitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.DEFAULT));
         }
         for (int i = 0; i < ContextConstants.NUMBER_OF_ANIMALS; i++) {
             animalTiledTextureRegionList.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlasList.get(i), activity, i + ".jpg", 2, 2));

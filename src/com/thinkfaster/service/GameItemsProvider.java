@@ -34,7 +34,7 @@ public class GameItemsProvider {
 
 
     public IBackground getBackground() {
-        return new Background(Color.BLUE);
+        return new Background(Color.WHITE);
     }
 
     public List<QuestionMarkItem> getQuestionMarks(List<MemoryPair> memoryPairs) {

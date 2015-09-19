@@ -16,6 +16,7 @@ public class ContextConstants implements Constants, LevelConstants {
     public static final float SPLASH_SCREEN_TIME = 2.0f;
 
     public static final float MEMORY_ITEM_SCALE = 0.42f;
+    public static final float QUESTION_MARK_SCALE = 0.42f;
 
     public static final int NUMBER_OF_ANIMALS = 25;
     public static final int NUMBER_OF_SOUNDS_PER_ANIMAL = 4;
