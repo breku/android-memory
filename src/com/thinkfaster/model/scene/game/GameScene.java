@@ -5,7 +5,6 @@ import com.thinkfaster.handler.HideClickedItemsUpdateHandler;
 import com.thinkfaster.handler.ShowClickedItemsUpdateHandler;
 import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.manager.SceneManager;
-import com.thinkfaster.matcher.ClassTouchAreaMacher;
 import com.thinkfaster.model.Level;
 import com.thinkfaster.model.shape.MemoryPair;
 import com.thinkfaster.model.shape.QuestionMarkItem;
@@ -13,13 +12,8 @@ import com.thinkfaster.service.GameItemsProvider;
 import com.thinkfaster.util.ContextConstants;
 import com.thinkfaster.util.SceneType;
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.engine.handler.timer.ITimerCallback;
-import org.andengine.engine.handler.timer.TimerHandler;
-import org.andengine.entity.sprite.Sprite;
 
 import java.util.List;
-
-import static com.thinkfaster.util.ContextConstants.MEMORY_ITEM_SHOWTIME;
 
 /**
  * User: Breku
@@ -59,12 +53,6 @@ public class GameScene extends AbstractGameScene {
         registerUpdateHandlers();
     }
 
-    private void clear() {
-        clearChildScene();
-        clearUpdateHandlers();
-        clearTouchAreas();
-    }
-
     @Override
     public void onBackKeyPressed() {
         SceneManager.getInstance().loadMenuScene(this);
@@ -84,10 +72,16 @@ public class GameScene extends AbstractGameScene {
         ResourcesManager.getInstance().unloadGameTextures();
     }
 
+    private void clear() {
+        clearChildScene();
+        clearUpdateHandlers();
+        clearTouchAreas();
+    }
+
     private void registerUpdateHandlers() {
         registerUpdateHandler(new FoundMemoryPairsUpdateHandler(memoryPairs));
         registerUpdateHandler(new ShowClickedItemsUpdateHandler(memoryPairs));
-        registerUpdateHandler(new HideClickedItemsUpdateHandler(memoryPairs,engine));
+        registerUpdateHandler(new HideClickedItemsUpdateHandler(memoryPairs, engine));
     }
 
     private void createMemoryItems() {
@@ -126,32 +120,8 @@ public class GameScene extends AbstractGameScene {
     }
 
 
-
-
-
-    private void hideMemoryItems() {
-        showingItems = true;
-
-        registerUpdateHandler(new TimerHandler(MEMORY_ITEM_SHOWTIME, new ITimerCallback() {
-            @Override
-            public void onTimePassed(TimerHandler pTimerHandler) {
-                for (MemoryPair memoryPair : memoryPairs) {
-                    if (!memoryPair.isFound()) {
-                        memoryPair.getItem1().setClicked(false);
-                        memoryPair.getItem2().setClicked(false);
-                        memoryPair.getItem1().setZIndex(0);
-                        memoryPair.getItem2().setZIndex(0);
-                    }
-                }
-                showingItems = false;
-            }
-        }));
-    }
-
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
-
-
 
 
         sortChildren();
