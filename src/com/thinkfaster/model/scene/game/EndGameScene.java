@@ -56,7 +56,11 @@ public class EndGameScene extends BaseScene implements IOnSceneTouchListener {
     private void createBackground(double score) {
         attachChild(new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2,
                 ResourcesManager.getInstance().getEndGameBackgroundTextureRegion(), vertexBufferObjectManager));
-        attachChild(new Text(400, 200, ResourcesManager.getInstance().getWhiteFont(),
-                "score: " + String.valueOf(score), vertexBufferObjectManager));
+        attachChild(new Text(380, 240, ResourcesManager.getInstance().getBlackFont(),
+                getScoreText(score), vertexBufferObjectManager));
+    }
+
+    private String getScoreText(double score) {
+        return String.format("%s", score);
     }
 }

@@ -9,6 +9,7 @@ import com.thinkfaster.model.MemoryConfiguration;
 import com.thinkfaster.model.shape.MemoryPair;
 import com.thinkfaster.model.shape.QuestionMarkItem;
 import com.thinkfaster.service.GameItemsProvider;
+import com.thinkfaster.service.HighScoreService;
 import com.thinkfaster.util.ContextConstants;
 import com.thinkfaster.util.SceneType;
 import org.andengine.engine.camera.hud.HUD;
@@ -27,13 +28,14 @@ import java.util.List;
 public class GameScene extends AbstractGameScene {
 
     private static final String TAG = "GameScene";
-    private List<QuestionMarkItem> questionMarks;
+
     private HUD gameHUD;
     private GameItemsProvider gameItemsProvider;
     private Level currentLevel;
     private List<MemoryPair> memoryPairs;
     private Text timerText;
     private MemoryConfiguration memoryConfiguration;
+    private HighScoreService highScoreService;
 
     /**
      * @param objects objects[0] - levelDifficulty
@@ -48,6 +50,7 @@ public class GameScene extends AbstractGameScene {
     public void initializeServices() {
         gameItemsProvider = new GameItemsProvider(resourcesManager);
         memoryConfiguration = new MemoryConfiguration();
+        highScoreService = new HighScoreService();
     }
 
     @Override
@@ -109,10 +112,10 @@ public class GameScene extends AbstractGameScene {
             registerTouchArea(memoryPair.getItem2());
         }
 
-        questionMarks = gameItemsProvider.getQuestionMarks(memoryPairs);
+        final List<QuestionMarkItem> questionMarks = gameItemsProvider.getQuestionMarks(memoryPairs);
         for (QuestionMarkItem questionMark : questionMarks) {
             questionMark.setZIndex(1);
-            attachChild(questionMark);
+//            attachChild(questionMark);
         }
     }
 
@@ -147,12 +150,18 @@ public class GameScene extends AbstractGameScene {
         return Double.parseDouble(String.valueOf(timerText.getText()));
     }
 
+    private void finishGame() {
+        final double score = getScore();
+        highScoreService.updateScores(score);
+        SceneManager.getInstance().loadEndGameScene(score);
+    }
+
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
         super.onManagedUpdate(pSecondsElapsed);
 
         if (memoryConfiguration.isGameFinished()) {
-            SceneManager.getInstance().loadEndGameScene(getScore());
+            finishGame();
         }
 
         sortChildren();

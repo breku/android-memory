@@ -321,7 +321,7 @@ public class ResourcesManager {
         }
         FontFactory.setAssetBasePath("font/");
         gameFontTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
-        blackFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), gameFontTextureAtlas, activity.getAssets(), "font1.ttf", 30, true, Color.BLACK, 2, Color.BLACK);
+        blackFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), gameFontTextureAtlas, activity.getAssets(), "font1.ttf", 30, true, Color.BLACK, 1, Color.BLACK);
         gameFontTextureAtlas.load();
         blackFont.load();
     }
