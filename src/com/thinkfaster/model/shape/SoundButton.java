@@ -1,6 +1,7 @@
 package com.thinkfaster.model.shape;
 
 import com.thinkfaster.manager.ResourcesManager;
+import org.andengine.audio.sound.Sound;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.adt.color.Color;
@@ -12,12 +13,18 @@ public class SoundButton extends AnimatedSprite {
 
     private static final int MUTE_TILE_INTEX = 0;
     private static final int SOUND_ON_TILE_INTEX = 1;
+    private final Sound clickSound;
     private boolean clicked;
 
     public SoundButton(float pX, float pY) {
         super(pX, pY, ResourcesManager.getInstance().getSoundButtonsTiledTextureRegion(), ResourcesManager.getInstance().getVertexBufferObjectManager());
         setScale(0.5f);
         setColor(new Color(0.51f, 0.51f, 0.51f));
+        clickSound = ResourcesManager.getInstance().getStartGameSound();
+    }
+
+    public void playSound() {
+        clickSound.play();
     }
 
     @Override

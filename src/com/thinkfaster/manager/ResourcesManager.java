@@ -1,6 +1,7 @@
 package com.thinkfaster.manager;
 
 import android.graphics.Color;
+import android.util.Log;
 import com.thinkfaster.util.ContextConstants;
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
@@ -32,11 +33,11 @@ import java.util.List;
 public class ResourcesManager {
 
     private static final ResourcesManager INSTANCE = new ResourcesManager();
+    private static final String TAG = "ResourcesManager";
     private BaseGameActivity activity;
     private Engine engine;
     private Camera camera;
     private VertexBufferObjectManager vertexBufferObjectManager;
-
     private BitmapTextureAtlas splashTextureAtlas, menuFontTextureAtlas, gameFontTextureAtlas, greenFontTextureAtlas,
             chalkFontTextureAtlas, loadingTextureAtlas;
     private BuildableBitmapTextureAtlas menuTextureAtlas, aboutTextureAtlas, endGameTextureAtlas,
@@ -52,7 +53,6 @@ public class ResourcesManager {
     private ITiledTextureRegion soundButtonsTiledTextureRegion;
     // Help
     private ITextureRegion aboutBackgroundTextureRegion;
-
     // EndGame
     private ITextureRegion endGameBackgroundTextureRegion;
     // HighScore
@@ -60,9 +60,8 @@ public class ResourcesManager {
     //Loading
     private ITextureRegion loadingTextureRegion;
     // Game Type
-    private ITextureRegion backgroundGameTypeTextureRegion, starGoldTextureRegion, starWhiteTextureRegion,
-            awesomeTextureRegion, lockTextureRegion, playButtonTextureRegion2;
-    private List<Sound> winSoundList, loseSoundList, halfWinSoundList;
+    private ITextureRegion backgroundGameTypeTextureRegion;
+    private List<Sound> winSoundList, loseSoundList, halfWinSoundList, animalSoundList;
     private Sound startGameSound, goodClickSound, wrongClickSound;
     private Font whiteFont, blackFont, greenFont, chalkFont;
 
@@ -75,6 +74,10 @@ public class ResourcesManager {
 
     public static ResourcesManager getInstance() {
         return INSTANCE;
+    }
+
+    public List<Sound> getAnimalSoundList() {
+        return animalSoundList;
     }
 
     public TextureRegion getQuestionMarkGameTextureRegion() {
@@ -100,6 +103,7 @@ public class ResourcesManager {
     public void loadGameResources() {
         loadGameGraphics();
         loadGameMusic();
+        loadAnimalsMusic();
         loadEndGameResources();
     }
 
@@ -376,6 +380,9 @@ public class ResourcesManager {
     }
 
     private void loadGameMusic() {
+        if (winSoundList != null) {
+            return;
+        }
 
         SoundFactory.setAssetBasePath("mfx/other/");
         winSoundList = new ArrayList<Sound>();
@@ -396,6 +403,28 @@ public class ResourcesManager {
             wrongClickSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "wrongClick.ogg");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public Sound getStartGameSound() {
+        return startGameSound;
+    }
+
+    private void loadAnimalsMusic() {
+        if (animalSoundList != null) {
+            return;
+        }
+
+        SoundFactory.setAssetBasePath("mfx/animals/");
+        animalSoundList = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < ContextConstants.NUMBER_OF_SOUNDS; i++) {
+
+                animalSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, i + ".ogg"));
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error during loading animal sounds", e);
         }
     }
 
@@ -444,12 +473,6 @@ public class ResourcesManager {
         gameTypeTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
 
         backgroundGameTypeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "background.png");
-
-        starGoldTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "goldStar.png");
-        starWhiteTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "whiteStar.png");
-        awesomeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "awesome.png");
-        lockTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "lock.png");
-        playButtonTextureRegion2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "playButton.png");
 
         try {
             gameTypeTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(1, 1, 1));

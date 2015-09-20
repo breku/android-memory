@@ -7,9 +7,10 @@ import com.thinkfaster.model.shape.AnimalId;
 import com.thinkfaster.model.shape.MemoryItem;
 import com.thinkfaster.model.shape.MemoryPair;
 import com.thinkfaster.model.shape.QuestionMarkItem;
+import com.thinkfaster.util.ContextConstants;
+import org.andengine.audio.sound.Sound;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.background.IBackground;
-import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.util.adt.color.Color;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -61,10 +62,17 @@ public class GameItemsProvider {
 
             final MemoryItem memoryItem1 = createMemoryItem(animalId, level, position1);
             final MemoryItem memoryItem2 = createMemoryItem(animalId, level, position2);
-            result.add(new MemoryPair(memoryItem1, memoryItem2));
+            final Sound sound = createSound(animalId);
+            result.add(new MemoryPair(memoryItem1, memoryItem2, sound));
         }
         Log.i(TAG, "<< Getting memory pairs finished with result=" + result);
         return result;
+    }
+
+    private Sound createSound(AnimalId animalId) {
+        final List<Sound> animalSoundList = resourcesManager.getAnimalSoundList();
+        final int soundIndex = animalId.getTextureId() * ContextConstants.NUMBER_OF_SOUNDS_PER_ANIMAL + animalId.getTileId();
+        return animalSoundList.get(soundIndex);
     }
 
     private QuestionMarkItem createQuestionMarkItem(MemoryItem memoryItem) {
@@ -73,10 +81,10 @@ public class GameItemsProvider {
 
     private MemoryItem createMemoryItem(AnimalId animalId, Level level, Pair<Integer, Integer> position) {
         Log.d(TAG, String.format(">> Creating memory item with animalId=%s level=%s position=%s", animalId, level.name(), position));
-        final ITiledTextureRegion animalTiledTexture = resourcesManager.getAnimalTiledTexture(animalId.getLeft());
+
         int positionX = calculatePositionX(position.getLeft(), level.getLevelOffsetX());
         int positionY = calculatePositionY(position.getRight());
-        final MemoryItem memoryItem = new MemoryItem(animalId, positionX, positionY, animalTiledTexture);
+        final MemoryItem memoryItem = new MemoryItem(animalId, positionX, positionY);
         Log.d(TAG, String.format("<< Memory item created=%s", memoryItem));
         return memoryItem;
     }

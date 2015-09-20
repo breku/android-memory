@@ -1,5 +1,6 @@
 package com.thinkfaster.model.shape;
 
+import org.andengine.audio.sound.Sound;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -9,11 +10,13 @@ public class MemoryPair {
 
     private final MemoryItem item1;
     private final MemoryItem item2;
+    private final Sound sound;
     private boolean found;
 
-    public MemoryPair(MemoryItem item1, MemoryItem item2) {
+    public MemoryPair(MemoryItem item1, MemoryItem item2, Sound sound) {
         this.item1 = item1;
         this.item2 = item2;
+        this.sound = sound;
     }
 
     public boolean twoItemsVisible() {
@@ -34,6 +37,10 @@ public class MemoryPair {
 
     public MemoryItem getItem2() {
         return item2;
+    }
+
+    public void playSound() {
+        sound.play();
     }
 
     @Override

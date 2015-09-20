@@ -4,7 +4,6 @@ import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.util.ContextConstants;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -16,8 +15,8 @@ public class MemoryItem extends AnimatedSprite {
     private boolean isClicked;
     private boolean itemVisible;
 
-    public MemoryItem(AnimalId animalId, int positionX, int positionY, ITiledTextureRegion pTiledTextureRegion) {
-        super(positionX, positionY, pTiledTextureRegion, ResourcesManager.getInstance().getVertexBufferObjectManager());
+    public MemoryItem(AnimalId animalId, int positionX, int positionY) {
+        super(positionX, positionY, ResourcesManager.getInstance().getAnimalTiledTexture(animalId.getTextureId()), ResourcesManager.getInstance().getVertexBufferObjectManager());
         this.animalId = animalId;
         initialize();
     }
@@ -66,6 +65,6 @@ public class MemoryItem extends AnimatedSprite {
 
     private void initialize() {
         setScale(ContextConstants.MEMORY_ITEM_SCALE);
-        setCurrentTileIndex(animalId.getRight());
+        setCurrentTileIndex(animalId.getTileId());
     }
 }
