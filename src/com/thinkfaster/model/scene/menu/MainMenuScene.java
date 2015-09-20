@@ -86,7 +86,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         soundButton = new SoundButton(600, 280);
         if (soundService.isMusicOn()) {
             soundButton.setMusicOn();
-        }else{
+        } else {
             soundButton.setMusicOff();
         }
         registerTouchArea(soundButton);
@@ -132,7 +132,8 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         menuScene.setPosition(0, 0);
 
         final IMenuItem newGameItem = new ScaleMenuItemDecorator(new SpriteMenuItem(NEW_GAME, ResourcesManager.getInstance().getPlayButtonTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
-        final IMenuItem recordsItem = new ScaleMenuItemDecorator(new SpriteMenuItem(RECORDS, ResourcesManager.getInstance().getButtonHighScoreTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
+        final IMenuItem recordsItem = new ScaleMenuItemDecorator(new SpriteMenuItem(RECORDS, ResourcesManager.getInstance().getHighscoresButtonTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
+        recordsItem.setColor(new Color(0.51f, 0.51f, 0.51f));
 
         menuScene.addMenuItem(newGameItem);
         menuScene.addMenuItem(recordsItem);
@@ -141,7 +142,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         menuScene.setBackgroundEnabled(false);
 
         newGameItem.setPosition(400, 280);
-        recordsItem.setPosition(210, 327);
+        recordsItem.setPosition(220, 270);
 
         menuScene.setOnMenuItemClickListener(this);
 

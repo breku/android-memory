@@ -48,7 +48,7 @@ public class ResourcesManager {
     // Splash
     private ITextureRegion splashTextureRegion;
     // Menu
-    private ITextureRegion menuBackgroundTextureRegion, playButtonTextureRegion, hexagonTextureRegion;
+    private ITextureRegion menuBackgroundTextureRegion, playButtonTextureRegion, hexagonTextureRegion, highscoresButtonTextureRegion;
     private ITiledTextureRegion soundButtonsTiledTextureRegion;
     // Help
     private ITextureRegion aboutBackgroundTextureRegion;
@@ -158,7 +158,6 @@ public class ResourcesManager {
         }
     }
 
-
     public List<ITiledTextureRegion> getAnimalTiledTextureRegionList() {
         return animalTiledTextureRegionList;
     }
@@ -251,6 +250,10 @@ public class ResourcesManager {
         return playButtonTextureRegion;
     }
 
+    public ITextureRegion getHighscoresButtonTextureRegion() {
+        return highscoresButtonTextureRegion;
+    }
+
     private void loadAboutGraphics() {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/about/");
         aboutTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
@@ -279,7 +282,7 @@ public class ResourcesManager {
         buttonHighScoreTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "menu_high.png");
         playButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "playButton.png");
         hexagonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "hexagon.png");
-
+        highscoresButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "highscoresButton.png");
         soundButtonsTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(menuTextureAtlas, activity, "soundButtons.png", 2, 1);
 
         try {
