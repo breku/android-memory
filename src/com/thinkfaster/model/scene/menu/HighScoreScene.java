@@ -83,14 +83,14 @@ public class HighScoreScene extends BaseScene implements IOnSceneTouchListener {
     }
 
     private Line createLine(int i) {
-        int y = 360 - i * 50;
+        int y = 340 - i * 50;
         final Line line = new Line(280, y, 510, y, vertexBufferObjectManager);
         line.setColor(Color.BLACK);
         return line;
     }
 
     private Text createRow(final int i, final String highscoreText) {
-        return new Text(380, 380 - i * 50, resourcesManager.getBlackFont(), highscoreText, 30, new TextOptions(HorizontalAlign.CENTER), vertexBufferObjectManager);
+        return new Text(380, 360- i * 50, resourcesManager.getBlackFont(), highscoreText, 30, new TextOptions(HorizontalAlign.CENTER), vertexBufferObjectManager);
     }
 
     private void createBackground() {

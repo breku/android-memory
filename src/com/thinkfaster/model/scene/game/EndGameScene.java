@@ -5,11 +5,13 @@ import com.thinkfaster.manager.SceneManager;
 import com.thinkfaster.model.scene.BaseScene;
 import com.thinkfaster.util.ContextConstants;
 import com.thinkfaster.util.SceneType;
+import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.util.adt.color.Color;
 
 /**
  * User: Breku
@@ -54,10 +56,25 @@ public class EndGameScene extends BaseScene implements IOnSceneTouchListener {
     }
 
     private void createBackground(double score) {
-        attachChild(new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2,
-                ResourcesManager.getInstance().getEndGameBackgroundTextureRegion(), vertexBufferObjectManager));
-        attachChild(new Text(380, 240, ResourcesManager.getInstance().getBlackFont(),
-                getScoreText(score), vertexBufferObjectManager));
+        attachChild(createBackground());
+        attachChild(createScoreText(score));
+        attachChild(createLine());
+    }
+
+    private Text createScoreText(double score) {
+        return new Text(380, 240, ResourcesManager.getInstance().getBlackFont(),
+                getScoreText(score), vertexBufferObjectManager);
+    }
+
+    private Sprite createBackground() {
+        return new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2,
+                ResourcesManager.getInstance().getEndGameBackgroundTextureRegion(), vertexBufferObjectManager);
+    }
+
+    private Line createLine() {
+        final Line line = new Line(280, 220, 510, 220, vertexBufferObjectManager);
+        line.setColor(Color.BLACK);
+        return line;
     }
 
     private String getScoreText(double score) {

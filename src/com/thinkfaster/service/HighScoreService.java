@@ -17,7 +17,7 @@ public class HighScoreService {
 
     private static final String HIGHSCORE_KEY = "HIGHSCORE_KEY";
 
-    private static final int HIGHSCORE_LIMIT = 3;
+    private static final int HIGHSCORE_LIMIT = 5;
     private static final Comparator<String> SCORE_COMPARATOR = new Comparator<String>() {
         @Override
         public int compare(String s1, String s2) {
