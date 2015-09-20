@@ -115,7 +115,7 @@ public class GameScene extends AbstractGameScene {
         final List<QuestionMarkItem> questionMarks = gameItemsProvider.getQuestionMarks(memoryPairs);
         for (QuestionMarkItem questionMark : questionMarks) {
             questionMark.setZIndex(1);
-            attachChild(questionMark);
+//            attachChild(questionMark);
         }
     }
 

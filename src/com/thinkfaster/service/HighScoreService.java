@@ -29,7 +29,7 @@ public class HighScoreService {
     private DatabaseService databaseService = new DatabaseService();
 
     public void updateScores(final Level level, final double score) {
-        Log.i(TAG, ">> Updating highscores with score=" + score);
+        Log.i(TAG, ">> Updating highscores for level=" + level.name() + " with score=" + score);
         final List<String> highscores = databaseService.getList(getHighscoreKey(level));
         Log.i(TAG, ">> Currect highscores=" + highscores);
         highscores.add(String.valueOf(score));
@@ -41,7 +41,7 @@ public class HighScoreService {
     }
 
     public List<String> getHighscores(Level level) {
-        Log.d(TAG, ">> Getting highscores");
+        Log.d(TAG, ">> Getting highscores for level=" + level.name());
         final List<String> result = databaseService.getList(getHighscoreKey(level));
         sort(result, SCORE_COMPARATOR);
         Log.d(TAG, "<< Getting finished with result=" + result);

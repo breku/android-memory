@@ -57,11 +57,13 @@ public class ResourcesManager {
     // EndGame
     private ITextureRegion endGameBackgroundTextureRegion;
     // HighScore
-    private ITextureRegion recordBackgroundTextureRegion, buttonHighScoreTextureRegion;
+    private ITextureRegion recordBackgroundTextureRegion, buttonHighScoreTextureRegion,
+            highscoreSmallGameTypeTextureRegion, highscoreMediumGameTypeTextureRegion, highscoreBigGameTypeTextureRegion;
+    ;
     //Loading
     private ITextureRegion loadingTextureRegion;
     // Game Type
-    private ITextureRegion backgroundGameTypeTextureRegion, smallGameTypeTextureRegion,mediumGameTypeTextureRegion,bigGameTypeTextureRegion;
+    private ITextureRegion backgroundGameTypeTextureRegion, smallGameTypeTextureRegion, mediumGameTypeTextureRegion, bigGameTypeTextureRegion;
 
     private List<Sound> animalSoundList = new ArrayList<>();
 
@@ -208,6 +210,18 @@ public class ResourcesManager {
 
     public Font getBlackFont() {
         return blackFont;
+    }
+
+    public ITextureRegion getHighscoreBigGameTypeTextureRegion() {
+        return highscoreBigGameTypeTextureRegion;
+    }
+
+    public ITextureRegion getHighscoreMediumGameTypeTextureRegion() {
+        return highscoreMediumGameTypeTextureRegion;
+    }
+
+    public ITextureRegion getHighscoreSmallGameTypeTextureRegion() {
+        return highscoreSmallGameTypeTextureRegion;
     }
 
     public Font getGreenFont() {
@@ -458,8 +472,11 @@ public class ResourcesManager {
 
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/highscore/");
 
-        recordTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 512, TextureOptions.BILINEAR);
+        recordTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.DEFAULT);
         recordBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(recordTextureAtlas, activity, "background.png");
+        highscoreSmallGameTypeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(recordTextureAtlas, activity, "4x4.png");
+        highscoreMediumGameTypeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(recordTextureAtlas, activity, "4x5.png");
+        highscoreBigGameTypeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(recordTextureAtlas, activity, "4x6.png");
 
         try {
             recordTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
