@@ -4,6 +4,8 @@ import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.manager.SceneManager;
 import com.thinkfaster.model.scene.BaseScene;
 import com.thinkfaster.model.shape.HexagonPlayButton;
+import com.thinkfaster.model.shape.SoundButton;
+import com.thinkfaster.service.SoundService;
 import com.thinkfaster.util.ContextConstants;
 import com.thinkfaster.util.SceneType;
 import org.andengine.entity.modifier.DelayModifier;
@@ -28,6 +30,13 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
     private final int RECORDS = 4;
 
     private MenuScene menuScene;
+    private SoundService soundService;
+    private SoundButton soundButton;
+
+    @Override
+    public void initializeServices() {
+        soundService = new SoundService();
+    }
 
     @Override
     public void createScene(Object... objects) {
@@ -35,6 +44,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         createBackground();
         createButtons();
         createPentagon();
+        createSoundButtons();
     }
 
     @Override
@@ -70,6 +80,17 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
                 return false;
         }
         return false;
+    }
+
+    private void createSoundButtons() {
+        soundButton = new SoundButton(600, 280);
+        if (soundService.isMusicOn()) {
+            soundButton.setMusicOn();
+        }else{
+            soundButton.setMusicOff();
+        }
+        registerTouchArea(soundButton);
+        attachChild(soundButton);
     }
 
     private void createPentagon() {
@@ -111,13 +132,9 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         menuScene.setPosition(0, 0);
 
         final IMenuItem newGameItem = new ScaleMenuItemDecorator(new SpriteMenuItem(NEW_GAME, ResourcesManager.getInstance().getPlayButtonTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
-        final IMenuItem aboutItem = new ScaleMenuItemDecorator(new SpriteMenuItem(ABOUT, ResourcesManager.getInstance().getButtonAboutTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
-        final IMenuItem exitItem = new ScaleMenuItemDecorator(new SpriteMenuItem(EXIT, ResourcesManager.getInstance().getButtonExitTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
         final IMenuItem recordsItem = new ScaleMenuItemDecorator(new SpriteMenuItem(RECORDS, ResourcesManager.getInstance().getButtonHighScoreTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
 
         menuScene.addMenuItem(newGameItem);
-        menuScene.addMenuItem(aboutItem);
-        menuScene.addMenuItem(exitItem);
         menuScene.addMenuItem(recordsItem);
 
         menuScene.buildAnimations();
@@ -125,11 +142,20 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
 
         newGameItem.setPosition(400, 280);
         recordsItem.setPosition(210, 327);
-        aboutItem.setPosition(210, 257);
-        exitItem.setPosition(210, 187);
 
         menuScene.setOnMenuItemClickListener(this);
 
         setChildScene(menuScene);
+    }
+
+    @Override
+    protected void onManagedUpdate(float pSecondsElapsed) {
+        super.onManagedUpdate(pSecondsElapsed);
+
+        if (soundButton.isClicked()) {
+            soundButton.changeSoundSettings();
+            soundService.saveMusicSettings(soundButton.isSoundOn());
+            soundButton.setClicked(false);
+        }
     }
 }

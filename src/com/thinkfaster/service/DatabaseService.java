@@ -17,13 +17,23 @@ public class DatabaseService {
     private SharedPreferences sharedPreferences = ResourcesManager.getInstance().getActivity().getPreferences(Context.MODE_PRIVATE);
 
     public void save(String key, List<String> value) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putStringSet(key, new HashSet<>(value));
         editor.commit();
     }
 
-    public List<String> get(String key) {
+    public List<String> getList(String key) {
         final Set<String> set = sharedPreferences.getStringSet(key, new HashSet<String>());
         return new ArrayList<>(set);
+    }
+
+    public boolean getBoolean(String key, boolean defaultValue) {
+        return sharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    public void putBoolean(String key, boolean value) {
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
     }
 }

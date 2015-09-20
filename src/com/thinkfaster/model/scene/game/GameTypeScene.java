@@ -62,9 +62,9 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
         menuScene.setBackgroundEnabled(false);
         menuScene.buildAnimations();
 
-        final IMenuItem smallSizeGame = new ScaleMenuItemDecorator(new SpriteMenuItem(Level.SMALL.getGameTypeId(), ResourcesManager.getInstance().getButtonNewGameTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
-        final IMenuItem mediumSizeGame = new ScaleMenuItemDecorator(new SpriteMenuItem(Level.MEDIUM.getGameTypeId(), ResourcesManager.getInstance().getButtonAboutTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
-        final IMenuItem bigSizeGame = new ScaleMenuItemDecorator(new SpriteMenuItem(Level.BIG.getGameTypeId(), ResourcesManager.getInstance().getButtonExitTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
+        final IMenuItem smallSizeGame = new ScaleMenuItemDecorator(new SpriteMenuItem(Level.SMALL.getGameTypeId(), ResourcesManager.getInstance().getButtonHighScoreTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
+        final IMenuItem mediumSizeGame = new ScaleMenuItemDecorator(new SpriteMenuItem(Level.MEDIUM.getGameTypeId(), ResourcesManager.getInstance().getButtonHighScoreTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
+        final IMenuItem bigSizeGame = new ScaleMenuItemDecorator(new SpriteMenuItem(Level.BIG.getGameTypeId(), ResourcesManager.getInstance().getButtonHighScoreTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
 
         menuScene.addMenuItem(smallSizeGame);
         menuScene.addMenuItem(mediumSizeGame);
