@@ -3,13 +3,19 @@ package com.thinkfaster.model.scene.menu;
 import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.manager.SceneManager;
 import com.thinkfaster.model.scene.BaseScene;
+import com.thinkfaster.model.shape.HexagonPlayButton;
 import com.thinkfaster.util.ContextConstants;
 import com.thinkfaster.util.SceneType;
+import org.andengine.entity.modifier.DelayModifier;
+import org.andengine.entity.modifier.LoopEntityModifier;
+import org.andengine.entity.modifier.RotationByModifier;
+import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.util.adt.color.Color;
 
 /**
  * User: Breku
@@ -25,8 +31,10 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
 
     @Override
     public void createScene(Object... objects) {
+        clear();
         createBackground();
         createButtons();
+        createPentagon();
     }
 
     @Override
@@ -64,6 +72,36 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         return false;
     }
 
+    private void createPentagon() {
+        final HexagonPlayButton hexagonPlayButton1 = createHexagon();
+        final HexagonPlayButton hexagonPlayButton2 = createHexagon();
+
+        hexagonPlayButton1.registerEntityModifier(createRotationModifier(30));
+        hexagonPlayButton2.registerEntityModifier(createRotationModifier(-30));
+        attachChild(hexagonPlayButton1);
+        attachChild(hexagonPlayButton2);
+    }
+
+    private HexagonPlayButton createHexagon() {
+        final HexagonPlayButton result = new HexagonPlayButton(400, 280);
+        result.setColor(Color.GREEN);
+        return result;
+    }
+
+    private LoopEntityModifier createRotationModifier(int rotationAngle) {
+        return new LoopEntityModifier(
+                new SequenceEntityModifier(
+                        new RotationByModifier(1, rotationAngle),
+                        new DelayModifier(0.02f)));
+    }
+
+    private void clear() {
+        clearChildScene();
+        clearEntityModifiers();
+        clearTouchAreas();
+        clearUpdateHandlers();
+    }
+
     private void createBackground() {
         attachChild(new Sprite(ContextConstants.SCREEN_WIDTH / 2, ContextConstants.SCREEN_HEIGHT / 2, resourcesManager.getMenuBackgroundTextureRegion(), vertexBufferObjectManager));
     }
@@ -72,7 +110,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         menuScene = new MenuScene(camera);
         menuScene.setPosition(0, 0);
 
-        final IMenuItem newGameItem = new ScaleMenuItemDecorator(new SpriteMenuItem(NEW_GAME, ResourcesManager.getInstance().getButtonNewGameTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
+        final IMenuItem newGameItem = new ScaleMenuItemDecorator(new SpriteMenuItem(NEW_GAME, ResourcesManager.getInstance().getPlayButtonTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
         final IMenuItem aboutItem = new ScaleMenuItemDecorator(new SpriteMenuItem(ABOUT, ResourcesManager.getInstance().getButtonAboutTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
         final IMenuItem exitItem = new ScaleMenuItemDecorator(new SpriteMenuItem(EXIT, ResourcesManager.getInstance().getButtonExitTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
         final IMenuItem recordsItem = new ScaleMenuItemDecorator(new SpriteMenuItem(RECORDS, ResourcesManager.getInstance().getButtonHighScoreTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
@@ -85,7 +123,7 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         menuScene.buildAnimations();
         menuScene.setBackgroundEnabled(false);
 
-        newGameItem.setPosition(210, 397);
+        newGameItem.setPosition(400, 280);
         recordsItem.setPosition(210, 327);
         aboutItem.setPosition(210, 257);
         exitItem.setPosition(210, 187);
