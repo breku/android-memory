@@ -58,6 +58,7 @@ public class MyActivity extends BaseGameActivity {
         Log.i(TAG, ">> Creating resources");
         ResourcesManager.prepareManager(getEngine(), this, camera, getVertexBufferObjectManager());
         SceneManager.prepareManager(this);
+        ResourcesManager.getInstance().loadAnimalsMusicAsynchronously();
         pOnCreateResourcesCallback.onCreateResourcesFinished();
         Log.i(TAG, "<< Creating resources finished");
     }

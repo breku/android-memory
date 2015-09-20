@@ -2,6 +2,7 @@ package com.thinkfaster.manager;
 
 import android.graphics.Color;
 import android.util.Log;
+import com.thinkfaster.asynctask.SoundLoaderAsyncTask;
 import com.thinkfaster.util.ContextConstants;
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
@@ -61,9 +62,16 @@ public class ResourcesManager {
     private ITextureRegion loadingTextureRegion;
     // Game Type
     private ITextureRegion backgroundGameTypeTextureRegion;
-    private List<Sound> winSoundList, loseSoundList, halfWinSoundList, animalSoundList;
-    private Sound startGameSound, goodClickSound, wrongClickSound;
+    private List<Sound> animalSoundList = new ArrayList<>();
+
+    private Sound startGameSound;
     private Font whiteFont, blackFont, greenFont, chalkFont;
+
+    private SoundLoaderAsyncTask soundLoaderAsyncTask;
+
+    public SoundLoaderAsyncTask getSoundLoaderAsyncTask() {
+        return soundLoaderAsyncTask;
+    }
 
     public static void prepareManager(Engine engine, BaseGameActivity activity, Camera camera, VertexBufferObjectManager vertexBufferObjectManager) {
         getInstance().engine = engine;
@@ -94,6 +102,7 @@ public class ResourcesManager {
 
     public void loadMainMenuResources() {
         loadMainMenuGraphics();
+        loadMainMenuSounds();
         loadWhiteFont();
         loadBlackFont();
         loadGreenFont();
@@ -102,8 +111,6 @@ public class ResourcesManager {
 
     public void loadGameResources() {
         loadGameGraphics();
-        loadGameMusic();
-        loadAnimalsMusic();
         loadEndGameResources();
     }
 
@@ -258,6 +265,15 @@ public class ResourcesManager {
         return highscoresButtonTextureRegion;
     }
 
+    public Sound getStartGameSound() {
+        return startGameSound;
+    }
+
+    public void loadAnimalsMusicAsynchronously() {
+        soundLoaderAsyncTask = new SoundLoaderAsyncTask(animalSoundList, engine, activity);
+        soundLoaderAsyncTask.execute();
+    }
+
     private void loadAboutGraphics() {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/about/");
         aboutTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
@@ -268,7 +284,7 @@ public class ResourcesManager {
             aboutTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 1));
             aboutTextureAtlas.load();
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error during building atlasses");
         }
     }
 
@@ -293,7 +309,7 @@ public class ResourcesManager {
             menuTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
             menuTextureAtlas.load();
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error during building atlasses");
         }
     }
 
@@ -351,80 +367,56 @@ public class ResourcesManager {
             return;
         }
 
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
         gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.DEFAULT);
+        gameTextureAtlasList = new ArrayList<>();
+        for (int i = 0; i < ContextConstants.NUMBER_OF_ANIMALS; i++) {
+            gameTextureAtlasList.add(new BuildableBitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.DEFAULT));
+        }
+
+        loadOterGameTextures();
+        loadAnimalsTextures();
+        loadGameAtlases();
+    }
+
+    private void loadOterGameTextures() {
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 
         questionMarkGameTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "questionItem.png");
+    }
 
+    private void loadAnimalsTextures() {
         animalTiledTextureRegionList = new ArrayList<>();
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/animals/");
 
-        gameTextureAtlasList = new ArrayList<>();
-        for (int i = 0; i < ContextConstants.NUMBER_OF_ANIMALS + 1; i++) {
-            gameTextureAtlasList.add(new BuildableBitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.DEFAULT));
-        }
         for (int i = 0; i < ContextConstants.NUMBER_OF_ANIMALS; i++) {
             animalTiledTextureRegionList.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlasList.get(i), activity, i + ".jpg", 2, 2));
         }
+    }
 
+    private void loadGameAtlases() {
         try {
-            for (int i = 0; i < ContextConstants.NUMBER_OF_ANIMALS + 1; i++) {
+            for (int i = 0; i < ContextConstants.NUMBER_OF_ANIMALS; i++) {
                 gameTextureAtlasList.get(i).build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
                 gameTextureAtlasList.get(i).load();
             }
             gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
             gameTextureAtlas.load();
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error during building atlasses");
         }
     }
 
-    private void loadGameMusic() {
-        if (winSoundList != null) {
-            return;
-        }
-
-        SoundFactory.setAssetBasePath("mfx/other/");
-        winSoundList = new ArrayList<Sound>();
-        loseSoundList = new ArrayList<Sound>();
-        halfWinSoundList = new ArrayList<Sound>();
-        try {
-            winSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "win.ogg"));
-
-            loseSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "lose.ogg"));
-            loseSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "lose1.ogg"));
-
-            halfWinSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "halfwin0.ogg"));
-            halfWinSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "halfwin1.ogg"));
-            halfWinSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "halfwin2.ogg"));
-
-            startGameSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "go.ogg");
-            goodClickSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "goodClick.ogg");
-            wrongClickSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "wrongClick.ogg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Sound getStartGameSound() {
-        return startGameSound;
-    }
-
-    private void loadAnimalsMusic() {
-        if (animalSoundList != null) {
+    private void loadMainMenuSounds() {
+        if (startGameSound != null) {
             return;
         }
 
         SoundFactory.setAssetBasePath("mfx/animals/");
-        animalSoundList = new ArrayList<>();
 
         try {
-            for (int i = 0; i < ContextConstants.NUMBER_OF_SOUNDS; i++) {
-
-                animalSoundList.add(SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, i + ".ogg"));
-            }
+            startGameSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), activity, "go.ogg");
         } catch (IOException e) {
-            Log.e(TAG, "Error during loading animal sounds", e);
+            Log.i(TAG, "Error during loading sounds");
         }
     }
 
@@ -442,7 +434,7 @@ public class ResourcesManager {
             endGameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
             endGameTextureAtlas.load();
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error during building atlasses");
         }
     }
 
@@ -460,7 +452,7 @@ public class ResourcesManager {
             recordTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
             recordTextureAtlas.load();
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error during building atlasses");
         }
     }
 
@@ -478,7 +470,7 @@ public class ResourcesManager {
             gameTypeTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(1, 1, 1));
             gameTypeTextureAtlas.load();
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error during building atlasses");
         }
     }
 }

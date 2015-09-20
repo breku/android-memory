@@ -1,6 +1,7 @@
 package com.thinkfaster.manager;
 
 import android.util.Log;
+import com.thinkfaster.asynctask.SoundLoaderAsyncTask;
 import com.thinkfaster.model.Level;
 import com.thinkfaster.model.scene.BaseScene;
 import com.thinkfaster.model.scene.LoadingScene;
@@ -19,6 +20,8 @@ import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * User: Breku
  * Date: 21.09.13
@@ -32,6 +35,7 @@ public class SceneManager {
     private SceneType currentSceneType = SceneType.SPLASH;
     private BaseScene gameScene, menuScene, loadingScene, splashScene, currentScene,
             aboutScene, endGameScene, recordScene, gameTypeScene;
+    private boolean musicLoaded;
 
     public static void prepareManager(BaseGameActivity activity) {
         getInstance().activity = activity;
@@ -99,6 +103,17 @@ public class SceneManager {
             public void onTimePassed(TimerHandler pTimerHandler) {
                 ResourcesManager.getInstance().getEngine().unregisterUpdateHandler(pTimerHandler);
                 ResourcesManager.getInstance().loadGameResources();
+
+                final SoundLoaderAsyncTask soundLoaderAsyncTask = ResourcesManager.getInstance().getSoundLoaderAsyncTask();
+
+                try {
+                    Log.i(TAG, ">> Waiting for task to finish...");
+                    soundLoaderAsyncTask.get();
+                    Log.i(TAG, "<< Task has been finished");
+                } catch (ExecutionException | InterruptedException e) {
+                    Log.e(TAG, "Error duing waiting for resources");
+                }
+
                 gameScene = new GameScene(level);
                 setScene(gameScene);
                 Log.i(TAG, "<< Loading game scene finished");
@@ -137,7 +152,7 @@ public class SceneManager {
                         setScene(recordScene);
                     }
                 }));
-                Log.i(TAG,"<< Loading highscore scene finished");
+                Log.i(TAG, "<< Loading highscore scene finished");
                 break;
             case SINGLE_PLAYER_GAME:
                 setScene(loadingScene);
@@ -152,13 +167,13 @@ public class SceneManager {
                         setScene(recordScene);
                     }
                 }));
-                Log.i(TAG,"<< Loading highscore scene finished");
+                Log.i(TAG, "<< Loading highscore scene finished");
                 break;
             case ENDGAME:
                 ResourcesManager.getInstance().loadRecordResources();
                 recordScene = new HighScoreScene();
                 setScene(recordScene);
-                Log.i(TAG,"<< Loading highscore scene finished");
+                Log.i(TAG, "<< Loading highscore scene finished");
                 break;
             default:
                 throw new UnsupportedOperationException();
@@ -166,16 +181,20 @@ public class SceneManager {
     }
 
     public void loadEndGameScene(double score) {
-        Log.i(TAG,">> Loading endgame scene");
+        Log.i(TAG, ">> Loading endgame scene");
         endGameScene = new EndGameScene(score);
         setScene(endGameScene);
         gameScene.disposeScene();
         ResourcesManager.getInstance().unloadGameTextures();
-        Log.i(TAG,"<< Loading engame scene finished");
+        Log.i(TAG, "<< Loading engame scene finished");
     }
 
     public BaseScene getCurrentScene() {
         return currentScene;
+    }
+
+    public void setMusicLoaded(boolean musicLoaded) {
+        this.musicLoaded = musicLoaded;
     }
 
     private void disposeSplashScene() {

@@ -86,7 +86,6 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
         soundButton = new SoundButton(600, 280);
         if (soundService.isMusicOn()) {
             soundButton.setMusicOn();
-            soundButton.playSound();
         } else {
             soundButton.setMusicOff();
         }
@@ -158,6 +157,9 @@ public class MainMenuScene extends BaseScene implements MenuScene.IOnMenuItemCli
             soundButton.changeSoundSettings();
             soundService.saveMusicSettings(soundButton.isSoundOn());
             soundButton.setClicked(false);
+            if (soundButton.isSoundOn()) {
+                soundButton.playSound();
+            }
         }
     }
 }
