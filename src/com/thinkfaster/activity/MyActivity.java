@@ -109,7 +109,7 @@ public class MyActivity extends BaseGameActivity {
     @Override
     protected void onCreate(final Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
-        AdBuddiz.setPublisherKey("0d40df22-485b-4797-8f6f-3b14678d072d");
+        AdBuddiz.setPublisherKey(ContextConstants.AD_BUDDIZ_PUBLISHER_KEY);
         AdBuddiz.cacheAds(this);
     }
 

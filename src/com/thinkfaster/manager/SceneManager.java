@@ -1,6 +1,7 @@
 package com.thinkfaster.manager;
 
 import android.util.Log;
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 import com.thinkfaster.asynctask.SoundLoaderAsyncTask;
 import com.thinkfaster.model.Level;
 import com.thinkfaster.model.scene.BaseScene;
@@ -20,6 +21,7 @@ import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -31,7 +33,7 @@ public class SceneManager {
     private static final SceneManager INSTANCE = new SceneManager();
     private static final String TAG = "SceneManager";
     private BaseGameActivity activity;
-
+    private Random random = new Random();
     private SceneType currentSceneType = SceneType.SPLASH;
     private BaseScene gameScene, menuScene, loadingScene, splashScene, currentScene,
             aboutScene, endGameScene, recordScene, gameTypeScene;
@@ -90,7 +92,7 @@ public class SceneManager {
         gameTypeScene = new GameTypeScene();
         setScene(gameTypeScene);
         ResourcesManager.getInstance().unloadMenuTextures();
-//        AdBuddiz.showAd(activity);
+        showAd();
         Log.i(TAG, "<< Loading game type scene finished");
     }
 
@@ -195,6 +197,13 @@ public class SceneManager {
 
     public void setMusicLoaded(boolean musicLoaded) {
         this.musicLoaded = musicLoaded;
+    }
+
+    private void showAd() {
+        final int randomInt = random.nextInt(100);
+        if (randomInt % 2 == 0) {
+            AdBuddiz.showAd(activity);
+        }
     }
 
     private void disposeSplashScene() {
