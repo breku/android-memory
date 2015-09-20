@@ -1,6 +1,7 @@
 package com.thinkfaster.service;
 
 import android.util.Log;
+import com.thinkfaster.model.Level;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import java.util.Comparator;
@@ -27,23 +28,27 @@ public class HighScoreService {
     private static final String TAG = "HighScoreService";
     private DatabaseService databaseService = new DatabaseService();
 
-    public void updateScores(double score) {
+    public void updateScores(final Level level, final double score) {
         Log.i(TAG, ">> Updating highscores with score=" + score);
-        final List<String> highscores = databaseService.getList(HIGHSCORE_KEY);
+        final List<String> highscores = databaseService.getList(getHighscoreKey(level));
         Log.i(TAG, ">> Currect highscores=" + highscores);
         highscores.add(String.valueOf(score));
         sort(highscores, SCORE_COMPARATOR);
         final Iterable<String> limitedHighscores = limit(highscores, HIGHSCORE_LIMIT);
         final List<String> newHighscores = newArrayList(limitedHighscores);
-        databaseService.save(HIGHSCORE_KEY, newHighscores);
+        databaseService.save(getHighscoreKey(level), newHighscores);
         Log.i(TAG, "<< Updating highscores finished with newHighscores=" + newHighscores);
     }
 
-    public List<String> getHighscores() {
+    public List<String> getHighscores(Level level) {
         Log.d(TAG, ">> Getting highscores");
-        final List<String> result = databaseService.getList(HIGHSCORE_KEY);
+        final List<String> result = databaseService.getList(getHighscoreKey(level));
         sort(result, SCORE_COMPARATOR);
         Log.d(TAG, "<< Getting finished with result=" + result);
         return result;
+    }
+
+    private String getHighscoreKey(Level level) {
+        return String.format("%s-%s", HIGHSCORE_KEY, level.name());
     }
 }

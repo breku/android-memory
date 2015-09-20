@@ -2,6 +2,7 @@ package com.thinkfaster.model.scene.menu;
 
 import com.thinkfaster.manager.ResourcesManager;
 import com.thinkfaster.manager.SceneManager;
+import com.thinkfaster.model.Level;
 import com.thinkfaster.model.scene.BaseScene;
 import com.thinkfaster.service.HighScoreService;
 import com.thinkfaster.util.ContextConstants;
@@ -73,7 +74,7 @@ public class HighScoreScene extends BaseScene implements IOnSceneTouchListener {
     }
 
     private void createHighscoreTable() {
-        final List<String> highscores = highScoreService.getHighscores();
+        final List<String> highscores = highScoreService.getHighscores(Level.SMALL);
 
         for (int i = 0; i < highscores.size(); i++) {
             final String highscoreText = String.format("%s", highscores.get(i));

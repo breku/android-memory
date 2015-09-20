@@ -152,7 +152,7 @@ public class GameScene extends AbstractGameScene {
 
     private void finishGame() {
         final double score = getScore();
-        highScoreService.updateScores(score);
+        highScoreService.updateScores(currentLevel,score);
         SceneManager.getInstance().loadEndGameScene(score);
     }
 

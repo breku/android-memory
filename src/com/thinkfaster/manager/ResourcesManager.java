@@ -61,7 +61,8 @@ public class ResourcesManager {
     //Loading
     private ITextureRegion loadingTextureRegion;
     // Game Type
-    private ITextureRegion backgroundGameTypeTextureRegion;
+    private ITextureRegion backgroundGameTypeTextureRegion, smallGameTypeTextureRegion,mediumGameTypeTextureRegion,bigGameTypeTextureRegion;
+
     private List<Sound> animalSoundList = new ArrayList<>();
 
     private Sound startGameSound;
@@ -231,6 +232,18 @@ public class ResourcesManager {
 
     public ITextureRegion getBackgroundGameTypeTextureRegion() {
         return backgroundGameTypeTextureRegion;
+    }
+
+    public ITextureRegion getSmallGameTypeTextureRegion() {
+        return smallGameTypeTextureRegion;
+    }
+
+    public ITextureRegion getMediumGameTypeTextureRegion() {
+        return mediumGameTypeTextureRegion;
+    }
+
+    public ITextureRegion getBigGameTypeTextureRegion() {
+        return bigGameTypeTextureRegion;
     }
 
     public ITextureRegion getLoadingTextureRegion() {
@@ -462,12 +475,15 @@ public class ResourcesManager {
         }
 
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/gametype/");
-        gameTypeTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+        gameTypeTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.DEFAULT);
 
         backgroundGameTypeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "background.jpg");
+        smallGameTypeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "4x4.png");
+        mediumGameTypeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "4x5.png");
+        bigGameTypeTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTypeTextureAtlas, activity, "4x6.png");
 
         try {
-            gameTypeTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(1, 1, 1));
+            gameTypeTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 0));
             gameTypeTextureAtlas.load();
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
             Log.e(TAG, "Error during building atlasses");

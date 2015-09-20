@@ -62,9 +62,9 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
         menuScene.setBackgroundEnabled(false);
         menuScene.buildAnimations();
 
-        final IMenuItem smallSizeGame = new ScaleMenuItemDecorator(new SpriteMenuItem(Level.SMALL.getGameTypeId(), ResourcesManager.getInstance().getButtonHighScoreTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
-        final IMenuItem mediumSizeGame = new ScaleMenuItemDecorator(new SpriteMenuItem(Level.MEDIUM.getGameTypeId(), ResourcesManager.getInstance().getButtonHighScoreTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
-        final IMenuItem bigSizeGame = new ScaleMenuItemDecorator(new SpriteMenuItem(Level.BIG.getGameTypeId(), ResourcesManager.getInstance().getButtonHighScoreTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
+        final IMenuItem smallSizeGame = new ScaleMenuItemDecorator(new SpriteMenuItem(Level.SMALL.getGameTypeId(), ResourcesManager.getInstance().getSmallGameTypeTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
+        final IMenuItem mediumSizeGame = new ScaleMenuItemDecorator(new SpriteMenuItem(Level.MEDIUM.getGameTypeId(), ResourcesManager.getInstance().getMediumGameTypeTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
+        final IMenuItem bigSizeGame = new ScaleMenuItemDecorator(new SpriteMenuItem(Level.BIG.getGameTypeId(), ResourcesManager.getInstance().getBigGameTypeTextureRegion(), vertexBufferObjectManager), 1.2f, 1);
 
         menuScene.addMenuItem(smallSizeGame);
         menuScene.addMenuItem(mediumSizeGame);
@@ -73,9 +73,9 @@ public class GameTypeScene extends BaseScene implements MenuScene.IOnMenuItemCli
         menuScene.buildAnimations();
         menuScene.setBackgroundEnabled(false);
 
-        smallSizeGame.setPosition(210, 397);
-        mediumSizeGame.setPosition(210, 257);
-        bigSizeGame.setPosition(210, 187);
+        smallSizeGame.setPosition(250, 260);
+        mediumSizeGame.setPosition(400, 260);
+        bigSizeGame.setPosition(550, 260);
 
         menuScene.setOnMenuItemClickListener(this);
 
