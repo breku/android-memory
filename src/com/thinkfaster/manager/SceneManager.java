@@ -1,5 +1,6 @@
 package com.thinkfaster.manager;
 
+import android.util.Log;
 import com.thinkfaster.model.Level;
 import com.thinkfaster.model.scene.BaseScene;
 import com.thinkfaster.model.scene.LoadingScene;
@@ -25,7 +26,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 public class SceneManager {
 
     private static final SceneManager INSTANCE = new SceneManager();
-
+    private static final String TAG = "SceneManager";
     private BaseGameActivity activity;
 
     private SceneType currentSceneType = SceneType.SPLASH;
@@ -65,6 +66,7 @@ public class SceneManager {
     }
 
     public void loadMenuScene(BaseScene scene) {
+        Log.i(TAG, ">> Loading menu scene");
         setScene(loadingScene);
         scene.disposeScene();
         ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ContextConstants.LOADING_SCENE_TIME, new ITimerCallback() {
@@ -74,18 +76,22 @@ public class SceneManager {
                 ResourcesManager.getInstance().loadMenuTextures();
                 ResourcesManager.getInstance().loadGameTypeResources();
                 setScene(menuScene);
+                Log.i(TAG, "<< Loading menu scene finished");
             }
         }));
     }
 
     public void loadGameTypeScene() {
+        Log.i(TAG, ">> Loading game type scene");
         gameTypeScene = new GameTypeScene();
         setScene(gameTypeScene);
         ResourcesManager.getInstance().unloadMenuTextures();
 //        AdBuddiz.showAd(activity);
+        Log.i(TAG, "<< Loading game type scene finished");
     }
 
     public void loadGameScene(final Level level) {
+        Log.i(TAG, ">> Loading game scene");
         setScene(loadingScene);
         ResourcesManager.getInstance().unloadGameTypeTextures();
         ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ContextConstants.LOADING_SCENE_TIME, new ITimerCallback() {
@@ -95,11 +101,13 @@ public class SceneManager {
                 ResourcesManager.getInstance().loadGameResources();
                 gameScene = new GameScene(level);
                 setScene(gameScene);
+                Log.i(TAG, "<< Loading game scene finished");
             }
         }));
     }
 
     public void loadAboutScene() {
+        Log.i(TAG, ">> Loading about scene");
         setScene(loadingScene);
         ResourcesManager.getInstance().unloadMenuTextures();
         ResourcesManager.getInstance().getEngine().registerUpdateHandler(new TimerHandler(ContextConstants.LOADING_SCENE_TIME / 2, new ITimerCallback() {
@@ -109,11 +117,13 @@ public class SceneManager {
                 ResourcesManager.getInstance().loadAboutResources();
                 aboutScene = new AboutScene();
                 setScene(aboutScene);
+                Log.i(TAG, "<< Loading about scene finished");
             }
         }));
     }
 
     public void loadHighScoreSceneFrom(SceneType sceneType) {
+        Log.i(TAG, ">> Loading highscore scene from=" + sceneType.name());
         switch (sceneType) {
             case MENU:
                 setScene(loadingScene);
@@ -127,6 +137,7 @@ public class SceneManager {
                         setScene(recordScene);
                     }
                 }));
+                Log.i(TAG,"<< Loading highscore scene finished");
                 break;
             case SINGLE_PLAYER_GAME:
                 setScene(loadingScene);
@@ -141,11 +152,13 @@ public class SceneManager {
                         setScene(recordScene);
                     }
                 }));
+                Log.i(TAG,"<< Loading highscore scene finished");
                 break;
             case ENDGAME:
                 ResourcesManager.getInstance().loadRecordResources();
                 recordScene = new HighScoreScene();
                 setScene(recordScene);
+                Log.i(TAG,"<< Loading highscore scene finished");
                 break;
             default:
                 throw new UnsupportedOperationException();
@@ -153,10 +166,12 @@ public class SceneManager {
     }
 
     public void loadEndGameScene(double score) {
+        Log.i(TAG,">> Loading endgame scene");
         endGameScene = new EndGameScene(score);
         setScene(endGameScene);
         gameScene.disposeScene();
         ResourcesManager.getInstance().unloadGameTextures();
+        Log.i(TAG,"<< Loading engame scene finished");
     }
 
     public BaseScene getCurrentScene() {
