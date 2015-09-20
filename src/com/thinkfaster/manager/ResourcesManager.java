@@ -379,7 +379,7 @@ public class ResourcesManager {
         }
         FontFactory.setAssetBasePath("font/");
         chalkFontTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
-        chalkFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), chalkFontTextureAtlas, activity.getAssets(), "ChalkPaint.ttf", 50, true, Color.WHITE, 2, Color.WHITE);
+        chalkFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), chalkFontTextureAtlas, activity.getAssets(), "ChalkPaint.ttf", 50, true, Color.BLACK, 2, Color.BLACK);
         chalkFontTextureAtlas.load();
         chalkFont.load();
     }
