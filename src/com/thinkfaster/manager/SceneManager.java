@@ -200,10 +200,7 @@ public class SceneManager {
     }
 
     private void showAd() {
-        final int randomInt = random.nextInt(100);
-        if (randomInt % 2 == 0) {
-            AdBuddiz.showAd(activity);
-        }
+        AdBuddiz.showAd(activity);
     }
 
     private void disposeSplashScene() {
